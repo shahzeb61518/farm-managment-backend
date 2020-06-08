@@ -18,14 +18,22 @@ mongoose.connect(url, (err, db) => {
   console.log("DB is Connected");
 });
 
-
-// app.use(cors());
-app.use((req, res, next) => {
+app.use(function (req, res, next) {
+  // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
+
+  // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Accept-Encoding,Accept-Language,Connection,Accept,Content-Type,Content-Length,Host,Authorization');
+
+  // Request headers you wish to allow
+  // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Content-Length,Host,Authorization');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
   res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Pass to next layer of middleware
   next();
 });
 
