@@ -8,6 +8,7 @@ const MongoClient = require('mongodb').MongoClient;
 const companyListRoutes = require('./routes/companyList-routes');
 const adminstrationRoutes = require('./routes/adminstration-routes');
 const userListRoutes = require('./routes/userList-routes');
+const SOPs = require('./routes/SOPs-routes');
 const app = express();
 
 
@@ -38,6 +39,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api/company', companyListRoutes);
 app.use('/api/user', userListRoutes);
 app.use('/api/admin', adminstrationRoutes);
+app.use('/api/sops', SOPs);
 
 app.use('*', (req, res, next) => {
   res.status(404).json({
