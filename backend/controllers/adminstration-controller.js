@@ -135,24 +135,19 @@ exports.deleteAdmin = (req, res, next) => {
   }
 
 //   // Update User Profile
-exports.adminUpdate = (req, res, next) => {
+exports.updateAdmin = (req, res, next) => {
     // console.log(req.body)
-
-    const user = new User({
-        _id: req.body.id,
-        name: req.body.name,
-        phone: req.body.phone,
-        dob: req.body.dob,
-        education: req.body.education,
-        job: req.body.job,
-        address: req.body.address,
+    const admin = new Admin({
+        _id: req.body.id ,
+        user_Role: req.body.user_Role,
+        user_Permission_Code: req.body.user_Permission_Code,
+        user_Email_Address: req.body.user_Email_Address,
+        user_First_Name: req.body.user_First_Name,
+        user_Last_Name: req.body.user_Last_Name,
+        user_Mobile_Phone: req.body.user_Mobile_Phone,
+        user_Office_Phone: req.body.user_Office_Phone,
     });
-    console.log(req.file);
-    if (req.file) {
-        const url = req.protocol + "://" + req.get("host");
-        user.image = url + "/images/" + req.file.filename;
-    }
-    User.updateOne({ _id: req.body.id }, user)
+    Admin.updateOne({ _id: req.body.id }, admin)
         .then(result => {
             if (result.nModified > 0) {
                 res.status(200).json({ message: "Update successful!" });

@@ -9,7 +9,7 @@ router.post('/create', companyListController.createCompany);
 router.post('/get', companyListController.getCompanyList);
 
 // Update COmpany
-// router.post("/:id", companyListController.updateCompany)
+router.post("/update", companyListController.updateCompany)
 
 // Delete Company by Id
 router.post("/delete", companyListController.deleteComapny)

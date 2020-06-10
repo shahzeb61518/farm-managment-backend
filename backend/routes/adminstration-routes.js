@@ -14,8 +14,11 @@ router.post('/login-admin', adminstrationController.adminLogin);
 // Admin by ID
 router.post('/delete', adminstrationController.deleteAdmin);
 
-// Admin update
+// Admin get
 router.post('/get', adminstrationController.getAdmin);
+
+// Admin update
+router.post('/update', adminstrationController.updateAdmin);
 
 // router.post('/checkauth', adminstrationController.checkAuth);
 // router.get("/AdminProfile/:id", checkAuth, adminstrationController.getAdminProfileById);

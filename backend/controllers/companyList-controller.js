@@ -61,3 +61,36 @@ exports.deleteComapny = (req, res, next) => {
     })
   });
 }
+
+
+exports.updateCompany = (req, res, next) => {
+  // console.log(req.body)
+  const company = new Company({
+    _id: req.body.id,
+    company_Tax_ID: req.body.company_Tax_ID,
+    company_Name: req.body.company_Name,
+    company_License_Number: req.body.company_License_Number,
+    company_Address_One: req.body.company_Address_One,
+    company_Address_Two: req.body.company_Address_Two,
+    company_City: req.body.company_City,
+    company_State: req.body.company_State,
+    company_Zip: req.body.company_Zip,
+  });
+ console.log(req.body)
+  Company.updateOne({ _id: req.body.id }, company)
+      .then(result => {
+        console.log(result)
+
+          if (result.nModified > 0) {
+              res.status(200).json({ message: "Update successful!" });
+          } else {
+              res.status(401).json({ message: "Not authorized!" });
+          }
+      })
+      .catch(err => {
+          console.log(err)
+          return res.status(401).json({
+              message: "No updated!"
+          });
+      });
+}
