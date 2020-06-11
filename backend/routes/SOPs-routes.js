@@ -11,8 +11,11 @@ router.post('/create', sopsController.createSOPs);
 // SOPs by ID
 router.post('/delete', sopsController.deleteSOPs);
 
-// SOPs update
+// SOPs get
 router.post('/get', sopsController.getSOPs);
+
+// SOPs update
+router.post('/update', sopsController.updateSOPs);
 
 // router.post('/checkauth', sopsController.checkAuth);
 // router.get("/SOPsProfile/:id", checkAuth, sopsController.getSOPsProfileById);
