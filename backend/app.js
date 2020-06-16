@@ -9,6 +9,13 @@ const companyListRoutes = require('./routes/companyList-routes');
 const adminstrationRoutes = require('./routes/adminstration-routes');
 const Users = require('./routes/users-routes');
 const SOPs = require('./routes/SOPs-routes');
+const Items = require('./routes/items-routes');
+const Plants = require('./routes/plants-routes');
+const Site = require('./routes/site-routes');
+const Storage = require('./routes/storage-routes');
+const Suppliers = require('./routes/suppliers-routes');
+const Role = require('./routes/role-routes');
+
 const app = express();
 
 
@@ -40,6 +47,12 @@ app.use('/api/company', companyListRoutes);
 app.use('/api/users', Users);
 app.use('/api/admin', adminstrationRoutes);
 app.use('/api/sops', SOPs);
+app.use('/api/items', Items);
+app.use('/api/plants', Plants);
+app.use('/api/role', Role);
+app.use('/api/site', Site);
+app.use('/api/storage', Storage);
+app.use('/api/suppliers', Suppliers);
 
 app.use('*', (req, res, next) => {
   res.status(404).json({
