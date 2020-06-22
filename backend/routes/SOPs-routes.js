@@ -17,6 +17,12 @@ router.post('/get', sopsController.getSOPs);
 // SOPs update
 router.post('/update', sopsController.updateSOPs);
 
+router.post('/reponsibility/update', sopsController.updateSOPsResponsibility);
+router.post('/adminstrative/update', sopsController.updateSOPsAdminstrative);
+router.post('/requirment/update', sopsController.updateSOPsRequirment);
+router.post('/process/update', sopsController.updateSOPsPorcess);
+router.post('/compeletion/update', sopsController.updateSOPsCompeletion);
+
 // router.post('/checkauth', sopsController.checkAuth);
 // router.get("/SOPsProfile/:id", checkAuth, sopsController.getSOPsProfileById);
 
