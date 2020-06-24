@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const sopsSchema = mongoose.Schema({
-    SOP_Purpose_Description: { type: String, required: true },
+    SOP_Purpose_Description: { type: String},
 
     responsibilityList: [],
 
@@ -12,7 +12,9 @@ const sopsSchema = mongoose.Schema({
 
     processStep: [],
 
-    compeletion: []
+    compeletion: [],
+
+    categoryName: []
 
 
 });

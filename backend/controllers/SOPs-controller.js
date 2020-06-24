@@ -63,6 +63,7 @@ exports.deleteSOPs = (req, res, next) => {
     })
   });
 }
+
 exports.updateSOPs = (req, res, next) => {
   // console.log(req.body)
   const sops = new SOPs({
@@ -72,9 +73,32 @@ exports.updateSOPs = (req, res, next) => {
     requirmentList: req.body.requirmentList,
     adminstrativeTask: req.body.adminstrativeTask,
     processStep: req.body.processStep,
-    compeletion: req.body.compeletion
+    compeletion: req.body.compeletion,
   });
   SOPs.updateOne({ _id: req.body.id }, sops)
+    .then(result => {
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      // console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
+      });
+    });
+}
+
+exports.updateSOPsWithCateogryName = (req, res, next) => {
+
+  SOPs.updateOne(
+    { _id: req.body.id },
+    {
+      $set: { categoryName: req.body.categoryName }
+    }
+  )
     .then(result => {
       if (result.nModified > 0) {
         res.status(200).json({ message: "Update successful!" });
