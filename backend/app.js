@@ -15,7 +15,7 @@ const Site = require('./routes/site-routes');
 const Storage = require('./routes/storage-routes');
 const Suppliers = require('./routes/suppliers-routes');
 const Role = require('./routes/role-routes');
-const SOPsCategory = require('./routes/sopscategory-routes');
+const category = require('./routes/category-routes');
 
 const app = express();
 
@@ -54,7 +54,7 @@ app.use('/api/role', Role);
 app.use('/api/site', Site);
 app.use('/api/storage', Storage);
 app.use('/api/suppliers', Suppliers);
-app.use('/api/sopscategory', SOPsCategory);
+app.use('/api/category/', category);
 
 app.use('*', (req, res, next) => {
   res.status(404).json({
