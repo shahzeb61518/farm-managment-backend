@@ -14,6 +14,7 @@ const suppliersSchema = mongoose.Schema({
        suppliers_City:  { type: String, required: true },
        suppliers_State:  { type: String, required: true },
        suppliers_Zip_Code:  { type: String, required: true },
+       supliersCategoryName: []
    
 });
 

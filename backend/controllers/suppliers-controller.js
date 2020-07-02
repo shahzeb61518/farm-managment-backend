@@ -82,6 +82,7 @@ exports.update = (req, res, next) => {
     suppliers_City: req.body.suppliers_City,
     suppliers_State: req.body.suppliers_State,
     suppliers_Zip_Code: req.body.suppliers_Zip_Code,
+    supliersCategoryName:req.body.supliersCategoryName
   });
   console.log(req.body)
   Suppliers.updateOne({ _id: req.body.id }, suppliers)

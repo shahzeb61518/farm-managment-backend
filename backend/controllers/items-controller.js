@@ -72,6 +72,7 @@ exports.update = (req, res, next) => {
     items_Part_No: req.body.items_Part_No,
     items_Unit_of_Measure: req.body.items_Unit_of_Measure,
     items_Unit_Size: req.body.items_Unit_Size,
+    itemsAddToSupplierList: req.body.itemsAddToSupplierList
   });
   console.log(req.body)
   Items.updateOne({ _id: req.body.id }, items)
