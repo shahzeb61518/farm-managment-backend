@@ -16,6 +16,8 @@ const Storage = require('./routes/storage-routes');
 const Suppliers = require('./routes/suppliers-routes');
 const Role = require('./routes/role-routes');
 const category = require('./routes/category-routes');
+const ForgotPassword = require('./routes/forgotpassword-routes');
+
 
 const app = express();
 
@@ -55,6 +57,7 @@ app.use('/api/site', Site);
 app.use('/api/storage', Storage);
 app.use('/api/suppliers', Suppliers);
 app.use('/api/category/', category);
+app.use('/api/forgotpassword/', ForgotPassword);
 
 app.use('*', (req, res, next) => {
   res.status(404).json({
