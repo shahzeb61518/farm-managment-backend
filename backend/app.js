@@ -21,8 +21,8 @@ const ForgotPassword = require('./routes/forgotpassword-routes');
 
 const app = express();
 
-
-const url = "mongodb+srv://shahzeb:shahzebworkflo111@cluster0-byo5r.mongodb.net/<dbname>?retryWrites=true&w=majority"
+// const url = "mongodb+srv://shahzeb:shahzebworkflo111@cluster0-byo5r.mongodb.net/<dbname>?retryWrites=true&w=majority"
+const url = "mongodb+srv://bcpplatform:timbcpplatform@cluster0.rfhb0.mongodb.net/bcpplatform?retryWrites=true&w=majority"
 // "mongodb+srv://shahzeb:shahzeb123@cluster0-tlmv5.mongodb.net/post-data?retryWrites=true&w=majority";
 mongoose.connect(url, (err, db) => {
   if (err) throw console.log('err>>>', err);

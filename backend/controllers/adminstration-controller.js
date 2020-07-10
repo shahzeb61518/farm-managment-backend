@@ -93,7 +93,7 @@ exports.adminLogin = (req, res, next) => {
 
 // Get Company 
 exports.getAdmin = (req, res, next) => {
-    Admin.find({ user_Role: { $ne: "1" } }).then(documents => {
+    Admin.find({ user_Role: { $ne: "100" } }).then(documents => {
       // console.log(documents);
       res.status(200).json({
         message: 'Data fetched!!!',
