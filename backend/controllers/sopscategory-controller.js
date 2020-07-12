@@ -24,7 +24,7 @@ exports.create = (req, res, next) => {
 
 // Get  
 exports.get = (req, res, next) => {
-  SOPSCategory.find().then(documents => {
+  SOPSCategory.find().populate('sopsId').then(documents => {
     // console.log(documents);
     res.status(200).json({
       message: 'Data fetched!!!',
@@ -59,7 +59,8 @@ exports.update = (req, res, next) => {
   // console.log(req.body)
   const sopsCategory = new SOPSCategory({
     _id: req.body.id,
-    SOP_Category: req.body.SOP_Category
+    SOP_Category: req.body.SOP_Category,
+    sopsId: req.body.sopsId
     
   });
  console.log(req.body)
