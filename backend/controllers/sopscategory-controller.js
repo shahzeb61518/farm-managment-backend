@@ -60,8 +60,9 @@ exports.update = (req, res, next) => {
   const sopsCategory = new SOPSCategory({
     _id: req.body.id,
     SOP_Category: req.body.SOP_Category,
-    sopsId: req.body.sopsId
-    
+    sopsId: req.body.sopsId,
+    checkIDs: req.body.checkIDs
+
   });
  console.log(req.body)
  SOPSCategory.updateOne({ _id: req.body.id }, sopsCategory)
