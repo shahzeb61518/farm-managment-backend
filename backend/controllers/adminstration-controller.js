@@ -70,12 +70,19 @@ exports.adminLogin = (req, res, next) => {
                 });
             }
             const token = jwt.sign(
-                { user_Email_Address: fetchedUser.user_Email_Address, userId: fetchedUser._id, namef: fetchedUser.user_First_Name, namel: fetchedUser.user_Last_Name },
+                {
+                    user_Email_Address: fetchedUser.user_Email_Address,
+                    userId: fetchedUser._id,
+                    namef: fetchedUser.user_First_Name,
+                    namel: fetchedUser.user_Last_Name,
+                    role: fetchedUser.user_Role,
+                },
                 "secret_this_should_be_longer",
                 { expiresIn: "10h" }
             );
             res.status(200).json({
                 token: token,
+                role: fetchedUser.user_Role,
                 expiresIn: 360000,
                 userId: fetchedUser._id,
                 namef: fetchedUser.user_First_Name,
@@ -94,17 +101,17 @@ exports.adminLogin = (req, res, next) => {
 // Get Company 
 exports.getAdmin = (req, res, next) => {
     Admin.find({ user_Role: { $ne: "100" } }).then(documents => {
-      // console.log(documents);
-      res.status(200).json({
-        message: 'Data fetched!!!',
-        AdminList: documents
-      });
+        // console.log(documents);
+        res.status(200).json({
+            message: 'Data fetched!!!',
+            AdminList: documents
+        });
     }).catch(error => {
-      res.status(500).json({
-        message: "Getting data failed!"
-      })
+        res.status(500).json({
+            message: "Getting data failed!"
+        })
     });
-  }
+}
 
 // // Get User By Id
 exports.getAdminById = (req, res, next) => {
@@ -120,25 +127,25 @@ exports.getAdminById = (req, res, next) => {
 // // Delete ADmin
 exports.deleteAdmin = (req, res, next) => {
     Admin.deleteOne({ _id: req.body.id }).then(
-      result => {
-        if (result.n > 0) {
-          res.status(200).json({ message: "Deletion successful!" });
-        } else {
-          res.status(401).json({ message: "Not deleted!" });
+        result => {
+            if (result.n > 0) {
+                res.status(200).json({ message: "Deletion successful!" });
+            } else {
+                res.status(401).json({ message: "Not deleted!" });
+            }
         }
-      }
     ).catch(error => {
-      res.status(500).json({
-        message: "Deletion failed!"
-      })
+        res.status(500).json({
+            message: "Deletion failed!"
+        })
     });
-  }
+}
 
 //   // Update User Profile
 exports.updateAdmin = (req, res, next) => {
     // console.log(req.body)
     const admin = new Admin({
-        _id: req.body.id ,
+        _id: req.body.id,
         user_Role: req.body.user_Role,
         user_Permission_Code: req.body.user_Permission_Code,
         user_Email_Address: req.body.user_Email_Address,

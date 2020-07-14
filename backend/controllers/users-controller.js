@@ -6,10 +6,11 @@ const jwt = require("jsonwebtoken");
 exports.create = (req, res, next) => {
   let date = new Date();
   date.toString;
+  let user = "user"
   bcrypt.hash(req.body.user_Password, 10).then(hash => {
-        // console.log("dataaaa", req.body)
+    // console.log("dataaaa", req.body)
     const users = new Users({
-      user_Role: req.body.user_Role,
+      user_Role: user,
       user_Company_ID: req.body.user_Company_ID,
       user_Job_Title: req.body.user_Job_Title,
       user_Permission_Code: req.body.user_Permission_Code,
@@ -35,6 +36,53 @@ exports.create = (req, res, next) => {
         console.log("error", err)
       });
   });
+}
+
+// User login
+exports.login = (req, res, next) => {
+  let fetchedUser;
+  Users.findOne({ user_Email_Address: req.body.user_Email_Address })
+    .then(user => {
+      if (!user) {
+        return res.status(401).json({
+          message: "User not found"
+        });
+      }
+      fetchedUser = user;
+      return bcrypt.compare(req.body.user_Password, user.user_Password);
+    })
+    .then(result => {
+      if (!result) {
+        return res.status(401).json({
+          message: "Invalid email or password"
+        });
+      }
+      const token = jwt.sign(
+        {
+          user_Email_Address: fetchedUser.user_Email_Address,
+          userId: fetchedUser._id,
+          namef: fetchedUser.user_First_Name,
+          namel: fetchedUser.user_Last_Name,
+          role: fetchedUser.user_Role
+        },
+        "secret_this_should_be_longer",
+        { expiresIn: "10h" }
+      );
+      res.status(200).json({
+        token: token,
+        role: fetchedUser.user_Role,
+        expiresIn: 360000,
+        userId: fetchedUser._id,
+        namef: fetchedUser.user_First_Name,
+        namel: fetchedUser.user_Last_Name,
+        email: fetchedUser.user_Email_Address
+      });
+    })
+    .catch(err => {
+      return res.status(401).json({
+        message: "Invalid authentication credentials!"
+      });
+    });
 }
 
 

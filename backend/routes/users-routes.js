@@ -5,8 +5,12 @@ const usersController = require('../controllers/users-controller');
 // Create user
 router.post('/create-user', usersController.create);
 
+// login
+router.post('/login', usersController.login);
+
 // User by ID
 router.post('/get', usersController.get);
+
 
 // User update
 router.post('/update', usersController.update);
