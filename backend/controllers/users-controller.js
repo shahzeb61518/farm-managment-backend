@@ -6,11 +6,10 @@ const jwt = require("jsonwebtoken");
 exports.create = (req, res, next) => {
   let date = new Date();
   date.toString;
-  let user = "user"
   bcrypt.hash(req.body.user_Password, 10).then(hash => {
     // console.log("dataaaa", req.body)
     const users = new Users({
-      user_Role: user,
+      user_Role: req.body.user_Permission_Code,
       user_Company_ID: req.body.user_Company_ID,
       user_Job_Title: req.body.user_Job_Title,
       user_Permission_Code: req.body.user_Permission_Code,
@@ -124,7 +123,7 @@ exports.update = (req, res, next) => {
   // console.log(req.body)
   const users = new Users({
     _id: req.body.id,
-    user_Role: req.body.user_Role,
+    user_Role: req.body.user_Permission_Code,
     user_Company_ID: req.body.user_Company_ID,
     user_Job_Title: req.body.user_Job_Title,
     user_Permission_Code: req.body.user_Permission_Code,
