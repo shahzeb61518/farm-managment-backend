@@ -43,8 +43,8 @@ exports.login = (req, res, next) => {
   Users.findOne({ user_Email_Address: req.body.user_Email_Address })
     .then(user => {
       if (!user) {
-        return res.status(401).json({
-          message: "User not found"
+        return res.status(200).json({
+          message: "Invalid email or password"
         });
       }
       fetchedUser = user;
@@ -52,7 +52,7 @@ exports.login = (req, res, next) => {
     })
     .then(result => {
       if (!result) {
-        return res.status(401).json({
+        return res.status(200).json({
           message: "Invalid email or password"
         });
       }
