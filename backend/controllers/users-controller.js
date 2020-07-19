@@ -121,32 +121,35 @@ exports.delete = (req, res, next) => {
 //   // Update User
 exports.update = (req, res, next) => {
   // console.log(req.body)
-  const users = new Users({
-    _id: req.body.id,
-    user_Role: req.body.user_Permission_Code,
-    user_Company_ID: req.body.user_Company_ID,
-    user_Job_Title: req.body.user_Job_Title,
-    user_Permission_Code: req.body.user_Permission_Code,
-    user_Email_Address: req.body.user_Email_Address,
-    user_First_Name: req.body.user_First_Name,
-    user_Last_Name: req.body.user_Last_Name,
-    user_Mobile_Phone: req.body.user_Mobile_Phone,
-    user_Office_Phone: req.body.user_Office_Phone,
-  });
-  Users.updateOne({ _id: req.body.id }, users)
-    .then(result => {
-      if (result.nModified > 0) {
-        res.status(200).json({ message: "Update successful!" });
-      } else {
-        res.status(401).json({ message: "Not authorized!" });
-      }
-    })
-    .catch(err => {
-      console.log(err)
-      return res.status(401).json({
-        message: "No updated!"
-      });
+  bcrypt.hash(req.body.user_Password, 10).then(hash => {
+    const users = new Users({
+      _id: req.body.id,
+      user_Role: req.body.user_Permission_Code,
+      user_Company_ID: req.body.user_Company_ID,
+      user_Job_Title: req.body.user_Job_Title,
+      user_Permission_Code: req.body.user_Permission_Code,
+      user_Email_Address: req.body.user_Email_Address,
+      user_First_Name: req.body.user_First_Name,
+      user_Last_Name: req.body.user_Last_Name,
+      user_Mobile_Phone: req.body.user_Mobile_Phone,
+      user_Office_Phone: req.body.user_Office_Phone,
+      user_Password:hash
     });
+    Users.updateOne({ _id: req.body.id }, users)
+      .then(result => {
+        if (result.nModified > 0) {
+          res.status(200).json({ message: "Update successful!" });
+        } else {
+          res.status(401).json({ message: "Not authorized!" });
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        return res.status(401).json({
+          message: "No updated!"
+        });
+      });
+  });
 }
 
 // // Get User By Id
