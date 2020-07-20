@@ -8,14 +8,14 @@ exports.sendMail = (req, res, next) => {
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'shahzeb61518',
-      pass: '**********'
+      user: 'workflo.timbowden',
+      pass: 'bowdenworkflo'
     }
   });
 
   let mailOptions = {
     from: req.body.email,
-    to: "shahzeb5518151@gmail.com",
+    to: "workflo.timbowden@gmail.com",
     subject: "Reset Password",
     text: "<" + req.body.email + ">" + " Please reset my password as i forgot my Password signin to WorkFlo",
   };
