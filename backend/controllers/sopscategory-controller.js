@@ -61,7 +61,6 @@ exports.update = (req, res, next) => {
     _id: req.body.id,
     SOP_Category: req.body.SOP_Category,
     sopsId: req.body.sopsId,
-    checkIDs: req.body.checkIDs
 
   });
  console.log(req.body)

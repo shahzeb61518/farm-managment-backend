@@ -91,12 +91,12 @@ exports.updateSOPs = (req, res, next) => {
     });
 }
 
-exports.updateSOPsWithCateogryName = (req, res, next) => {
+exports.updateSOPsWithCateogrIDs = (req, res, next) => {
 
   SOPs.updateOne(
     { _id: req.body.id },
     {
-      $set: { categoryName: req.body.categoryName }
+      $set: { checkIDs: req.body.checkIDs }
     }
   )
     .then(result => {

@@ -14,8 +14,9 @@ const sopsSchema = mongoose.Schema({
 
     compeletion: [],
 
-    categoryName: []
+    categoryName: [],
 
+    checkIDs: []
 
 });
 
