@@ -6,35 +6,35 @@ const jwt = require("jsonwebtoken");
 exports.create = (req, res, next) => {
   let date = new Date();
   date.toString;
-  bcrypt.hash(req.body.user_Password, 10).then(hash => {
-    // console.log("dataaaa", req.body)
-    const users = new Users({
-      user_Role: req.body.user_Permission_Code,
-      user_Company_ID: req.body.user_Company_ID,
-      user_Job_Title: req.body.user_Job_Title,
-      user_Permission_Code: req.body.user_Permission_Code,
-      user_Email_Address: req.body.user_Email_Address,
-      user_First_Name: req.body.user_First_Name,
-      user_Last_Name: req.body.user_Last_Name,
-      user_Mobile_Phone: req.body.user_Mobile_Phone,
-      user_Office_Phone: req.body.user_Office_Phone,
-      user_Password: hash,
-      joinDate: date,
-    });
-    users.save()
-      .then(result => {
-        res.status(201).json({
-          message: "User created successfully!",
-          result: result
-        });
-      })
-      .catch(err => {
-        res.status(500).json({
-          message: "Invalid authentication credentials!"
-        });
-        console.log("error", err)
-      });
+  // bcrypt.hash(req.body.user_Password, 10).then(hash => {
+  // console.log("dataaaa", req.body)
+  const users = new Users({
+    user_Role: req.body.user_Permission_Code,
+    user_Company_ID: req.body.user_Company_ID,
+    user_Job_Title: req.body.user_Job_Title,
+    user_Permission_Code: req.body.user_Permission_Code,
+    user_Email_Address: req.body.user_Email_Address,
+    user_First_Name: req.body.user_First_Name,
+    user_Last_Name: req.body.user_Last_Name,
+    user_Mobile_Phone: req.body.user_Mobile_Phone,
+    user_Office_Phone: req.body.user_Office_Phone,
+    user_Password: req.body.user_Password,
+    joinDate: date,
   });
+  users.save()
+    .then(result => {
+      res.status(201).json({
+        message: "User created successfully!",
+        result: result
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "Invalid authentication credentials!"
+      });
+      console.log("error", err)
+    });
+  // });
 }
 
 // User login
@@ -48,7 +48,8 @@ exports.login = (req, res, next) => {
         });
       }
       fetchedUser = user;
-      return bcrypt.compare(req.body.user_Password, user.user_Password);
+      // return bcrypt.compare(req.body.user_Password, user.user_Password);
+      return req.body.user_Password  === user.user_Password
     })
     .then(result => {
       if (!result) {
@@ -121,35 +122,35 @@ exports.delete = (req, res, next) => {
 //   // Update User
 exports.update = (req, res, next) => {
   // console.log(req.body)
-  bcrypt.hash(req.body.user_Password, 10).then(hash => {
-    const users = new Users({
-      _id: req.body.id,
-      user_Role: req.body.user_Permission_Code,
-      user_Company_ID: req.body.user_Company_ID,
-      user_Job_Title: req.body.user_Job_Title,
-      user_Permission_Code: req.body.user_Permission_Code,
-      user_Email_Address: req.body.user_Email_Address,
-      user_First_Name: req.body.user_First_Name,
-      user_Last_Name: req.body.user_Last_Name,
-      user_Mobile_Phone: req.body.user_Mobile_Phone,
-      user_Office_Phone: req.body.user_Office_Phone,
-      user_Password:hash
-    });
-    Users.updateOne({ _id: req.body.id }, users)
-      .then(result => {
-        if (result.nModified > 0) {
-          res.status(200).json({ message: "Update successful!" });
-        } else {
-          res.status(401).json({ message: "Not authorized!" });
-        }
-      })
-      .catch(err => {
-        console.log(err)
-        return res.status(401).json({
-          message: "No updated!"
-        });
-      });
+  // bcrypt.hash(req.body.user_Password, 10).then(hash => {
+  const users = new Users({
+    _id: req.body.id,
+    user_Role: req.body.user_Permission_Code,
+    user_Company_ID: req.body.user_Company_ID,
+    user_Job_Title: req.body.user_Job_Title,
+    user_Permission_Code: req.body.user_Permission_Code,
+    user_Email_Address: req.body.user_Email_Address,
+    user_First_Name: req.body.user_First_Name,
+    user_Last_Name: req.body.user_Last_Name,
+    user_Mobile_Phone: req.body.user_Mobile_Phone,
+    user_Office_Phone: req.body.user_Office_Phone,
+    user_Password: req.body.user_Password,
   });
+  Users.updateOne({ _id: req.body.id }, users)
+    .then(result => {
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
+      });
+    });
+  // });
 }
 
 // // Get User By Id

@@ -11,6 +11,9 @@ router.post('/get', workAssignmentController.get);
 //  update
 router.post('/update', workAssignmentController.update);
 
+//  update
+router.post('/archieved', workAssignmentController.archieved);
+
 // delete
 router.post('/delete', workAssignmentController.delete);
 

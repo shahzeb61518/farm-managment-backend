@@ -1,6 +1,7 @@
 const WorkAssignment = require('../models/workAssignment-model');
 
 exports.create = (req, res, next) => {
+  let archieveRecord = "false"
   const workAssignment = new WorkAssignment({
     SOP_ID: req.body.SOP_ID,
     SOP_Description: req.body.SOP_Description,
@@ -14,6 +15,7 @@ exports.create = (req, res, next) => {
     assignment_Percent_Over_Under: req.body.assignment_Percent_Over_Under,
     assignment_Status: req.body.assignment_Status,
     assignment_Notes: req.body.assignment_Notes,
+    archieveRecord:archieveRecord
   });
   workAssignment.save().then(createdObject => {
     console.log(createdObject);
@@ -91,6 +93,32 @@ exports.update = (req, res, next) => {
     .then(result => {
       console.log(result)
 
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
+      });
+    });
+}
+
+exports.archieved = (req, res, next) => {
+  // console.log(req.body)
+  const workAssignment = new WorkAssignment({
+    _id: req.body.id,
+    archieveRecord: req.body.archieveRecord
+  });
+  // console.log(req.body)
+  WorkAssignment.updateOne(
+    { _id: req.body.id },
+    { $set: { "archieveRecord": req.body.archieveRecord } })
+    .then(result => {
+      // console.log(result)
       if (result.nModified > 0) {
         res.status(200).json({ message: "Update successful!" });
       } else {
