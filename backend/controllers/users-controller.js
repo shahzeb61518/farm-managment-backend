@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 exports.create = (req, res, next) => {
   let date = new Date();
   date.toString;
+  let archieveRecord = "false"
+
   // bcrypt.hash(req.body.user_Password, 10).then(hash => {
   // console.log("dataaaa", req.body)
   const users = new Users({
@@ -20,6 +22,7 @@ exports.create = (req, res, next) => {
     user_Office_Phone: req.body.user_Office_Phone,
     user_Password: req.body.user_Password,
     joinDate: date,
+    archieveRecord:archieveRecord
   });
   users.save()
     .then(result => {
@@ -90,6 +93,11 @@ exports.login = (req, res, next) => {
 exports.get = (req, res, next) => {
   Users.find({ user_Role: { $ne: "1" } }).then(documents => {
     // console.log(documents);
+    documents= documents.filter((el) => {
+      if (el.archieveRecord) {
+        return el.archieveRecord != "true"
+      }
+    });
     res.status(200).json({
       message: 'Data fetched!!!',
       usersList: documents
@@ -135,6 +143,7 @@ exports.update = (req, res, next) => {
     user_Mobile_Phone: req.body.user_Mobile_Phone,
     user_Office_Phone: req.body.user_Office_Phone,
     user_Password: req.body.user_Password,
+    archieveRecord:req.body.archieveRecord
   });
   Users.updateOne({ _id: req.body.id }, users)
     .then(result => {
@@ -163,3 +172,23 @@ exports.update = (req, res, next) => {
 //             return res.status(200).json(user);
 //     });
 // }
+
+exports.archieved = (req, res, next) => {
+  Users.updateOne(
+    { _id: req.body.id },
+    { $set: { "archieveRecord": req.body.archieveRecord } })
+    .then(result => {
+      // console.log(result)
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
+      });
+    });
+}

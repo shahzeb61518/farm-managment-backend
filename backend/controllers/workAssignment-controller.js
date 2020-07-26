@@ -15,7 +15,7 @@ exports.create = (req, res, next) => {
     assignment_Percent_Over_Under: req.body.assignment_Percent_Over_Under,
     assignment_Status: req.body.assignment_Status,
     assignment_Notes: req.body.assignment_Notes,
-    archieveRecord:archieveRecord
+    archieveRecord: archieveRecord
   });
   workAssignment.save().then(createdObject => {
     console.log(createdObject);
@@ -42,6 +42,11 @@ exports.get = (req, res, next) => {
     .populate('assignment_assignToUserId')
     .populate('assignment_workSiteId').then(documents => {
       // console.log(documents);
+      documents= documents.filter((el) => {
+        if (el.archieveRecord) {
+          return el.archieveRecord != "true"
+        }
+      });
       res.status(200).json({
         message: 'Data fetched!!!',
         workAssignmentList: documents

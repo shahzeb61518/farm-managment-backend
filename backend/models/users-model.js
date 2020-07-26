@@ -11,6 +11,8 @@ const usersSchema = mongoose.Schema({
     user_Mobile_Phone: { type: String },
     user_Office_Phone: { type: String },
     user_Job_Title: { type: String },
+    archieveRecord: { type: String },
+
 
 });
 module.exports = mongoose.model('Users', usersSchema);

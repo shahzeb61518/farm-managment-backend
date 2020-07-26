@@ -9,6 +9,7 @@ const itemsSchema = mongoose.Schema({
     items_Part_No: { type: String},
     items_Unit_of_Measure: { type: String },
     items_Unit_Size: { type: String },
-    itemsAddToSupplierList: []
+    itemsAddToSupplierList: [],
+    archieveRecord: { type: String },
 });
 module.exports = mongoose.model('Items', itemsSchema);

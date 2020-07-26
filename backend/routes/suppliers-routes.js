@@ -11,6 +11,9 @@ router.post('/get', suppliersController.get);
 // update
 router.post('/update', suppliersController.update);
 
+//  update
+router.post('/archieved', suppliersController.archieved);
+
 // delete
 router.post('/delete', suppliersController.delete);
 

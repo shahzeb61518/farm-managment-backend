@@ -9,7 +9,7 @@ const adminstrationSchema = mongoose.Schema({
     user_Last_Name: { type: String, required: true },
     user_Mobile_Phone: { type: String, required: true },
     user_Office_Phone: { type: String, required: true },
-
+    archieveRecord: { type: String },
 });
 
 module.exports = mongoose.model('Admin', adminstrationSchema);

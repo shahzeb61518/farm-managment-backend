@@ -2,6 +2,8 @@ const SOPs = require('../models/SOPs-model');
 
 // Create a SOPs
 exports.createSOPs = (req, res, next) => {
+  let archieveRecord = "false"
+
   // console.log("boody of sops>>", req.body)
   // console.log("boody of responsibilityList>>", req.body.responsibilityList)
   // console.log("boody of requirmentList>>", req.body.requirmentList)
@@ -15,6 +17,7 @@ exports.createSOPs = (req, res, next) => {
     adminstrativeTask: req.body.adminstrativeTask,
     processStep: req.body.processStep,
     compeletion: req.body.compeletion,
+    archieveRecord:archieveRecord
 
   });
   sops.save().then(createdsops => {
@@ -37,6 +40,11 @@ exports.createSOPs = (req, res, next) => {
 exports.getSOPs = (req, res, next) => {
   SOPs.find().then(documents => {
     // console.log(documents);
+    // documents= documents.filter((el) => {
+    //     if (el.archieveRecord) {
+    //       return el.archieveRecord != "true"
+    //     }
+    //   });
     res.status(200).json({
       message: 'Data fetched!!!',
       sopsList: documents
@@ -74,6 +82,8 @@ exports.updateSOPs = (req, res, next) => {
     adminstrativeTask: req.body.adminstrativeTask,
     processStep: req.body.processStep,
     compeletion: req.body.compeletion,
+    archieveRecord:req.body.archieveRecord
+
   });
   SOPs.updateOne({ _id: req.body.id }, sops)
     .then(result => {
@@ -114,6 +124,27 @@ exports.updateSOPsWithCateogrIDs = (req, res, next) => {
     });
 }
 
+exports.archieved = (req, res, next) => {
+ 
+  // console.log(req.body)
+  SOPs.updateOne(
+    { _id: req.body.id },
+    { $set: { "archieveRecord": req.body.archieveRecord } })
+    .then(result => {
+      // console.log(result)
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
+      });
+    });
+}
 
 // SUBARRAY FUCTION
 

@@ -11,6 +11,9 @@ router.post('/get', plantsController.get);
 // User update
 router.post('/update', plantsController.update);
 
+//  update
+router.post('/archieved', plantsController.archieved);
+
 // delete
 router.post('/delete', plantsController.delete);
 

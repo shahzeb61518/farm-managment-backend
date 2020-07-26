@@ -11,6 +11,9 @@ router.post('/get', roleController.get);
 //  update
 router.post('/update', roleController.update);
 
+//  update
+router.post('/archieved', roleController.archieved);
+
 // delete
 router.post('/delete', roleController.delete);
 

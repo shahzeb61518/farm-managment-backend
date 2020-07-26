@@ -1,8 +1,11 @@
 const Role = require('../models/role-model');
 
 exports.create = (req, res, next) => {
+  let archieveRecord = "false"
+
   const role = new Role({
-    role_Name: req.body.role_Name
+    role_Name: req.body.role_Name,
+    archieveRecord:archieveRecord
   });
   role.save().then(createdObject => {
     console.log(createdObject);
@@ -26,6 +29,11 @@ exports.create = (req, res, next) => {
 exports.get = (req, res, next) => {
   Role.find().then(documents => {
     // console.log(documents);
+    // documents= documents.filter((el) => {
+    //   if (el.archieveRecord) {
+    //     return el.archieveRecord != "true"
+    //   }
+    // });
     res.status(200).json({
       message: 'Data fetched!!!',
       roleList: documents
@@ -59,7 +67,8 @@ exports.update = (req, res, next) => {
   // console.log(req.body)
   const role = new Role({
     _id: req.body.id,
-    role_Name: req.body.role_Name
+    role_Name: req.body.role_Name,
+    archieveRecord:req.body.archieveRecord
     
   });
  console.log(req.body)
@@ -79,4 +88,25 @@ exports.update = (req, res, next) => {
               message: "No updated!"
           });
       });
+}
+
+exports.archieved = (req, res, next) => {
+  // console.log(req.body)
+  Role.updateOne(
+    { _id: req.body.id },
+    { $set: { "archieveRecord": req.body.archieveRecord } })
+    .then(result => {
+      // console.log(result)
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
+      });
+    });
 }

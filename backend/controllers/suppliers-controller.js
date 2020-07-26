@@ -1,6 +1,8 @@
 const Suppliers = require('../models/suppliers-model');
 
 exports.create = (req, res, next) => {
+  let archieveRecord = "false"
+
   const suppliers = new Suppliers({
     suppliers_Name: req.body.suppliers_Name,
     suppliers_Tax_Id: req.body.suppliers_Tax_Id,
@@ -14,6 +16,7 @@ exports.create = (req, res, next) => {
     suppliers_City: req.body.suppliers_City,
     suppliers_State: req.body.suppliers_State,
     suppliers_Zip_Code: req.body.suppliers_Zip_Code,
+    archieveRecord:archieveRecord
   });
   suppliers.save().then(createdObject => {
     console.log(createdObject);
@@ -37,6 +40,11 @@ exports.create = (req, res, next) => {
 exports.get = (req, res, next) => {
   Suppliers.find().then(documents => {
     // console.log(documents);
+    // documents= documents.filter((el) => {
+    //   if (el.archieveRecord) {
+    //     return el.archieveRecord != "true"
+    //   }
+    // });
     res.status(200).json({
       message: 'Data fetched!!!',
       suppliersList: documents
@@ -82,13 +90,34 @@ exports.update = (req, res, next) => {
     suppliers_City: req.body.suppliers_City,
     suppliers_State: req.body.suppliers_State,
     suppliers_Zip_Code: req.body.suppliers_Zip_Code,
-    supliersCategoryName:req.body.supliersCategoryName
+    supliersCategoryName:req.body.supliersCategoryName,
   });
   console.log(req.body)
   Suppliers.updateOne({ _id: req.body.id }, suppliers)
     .then(result => {
       console.log(result)
 
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
+      });
+    });
+}
+
+exports.archieved = (req, res, next) => {
+  // console.log(req.body)
+  Suppliers.updateOne(
+    { _id: req.body.id },
+    { $set: { "archieveRecord": req.body.archieveRecord } })
+    .then(result => {
+      // console.log(result)
       if (result.nModified > 0) {
         res.status(200).json({ message: "Update successful!" });
       } else {

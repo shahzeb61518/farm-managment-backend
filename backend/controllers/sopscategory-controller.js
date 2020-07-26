@@ -1,8 +1,11 @@
 const SOPSCategory = require('../models/sopscategory-model');
 
 exports.create = (req, res, next) => {
+  let archieveRecord = "false"
+
   const sopsCategory = new SOPSCategory({
-    SOP_Category: req.body.SOP_Category
+    SOP_Category: req.body.SOP_Category,
+    archieveRecord:archieveRecord
   });
   sopsCategory.save().then(createdObject => {
     console.log(createdObject);
@@ -26,6 +29,11 @@ exports.create = (req, res, next) => {
 exports.get = (req, res, next) => {
   SOPSCategory.find().populate('sopsId').then(documents => {
     // console.log(documents);
+    // documents= documents.filter((el) => {
+    //   if (el.archieveRecord) {
+    //     return el.archieveRecord != "true"
+    //   }
+    // });
     res.status(200).json({
       message: 'Data fetched!!!',
       sopsCategoryList: documents
@@ -61,6 +69,7 @@ exports.update = (req, res, next) => {
     _id: req.body.id,
     SOP_Category: req.body.SOP_Category,
     sopsId: req.body.sopsId,
+    archieveRecord:req.body.archieveRecord
 
   });
  console.log(req.body)
@@ -80,4 +89,25 @@ exports.update = (req, res, next) => {
               message: "No updated!"
           });
       });
+}
+
+exports.archieved = (req, res, next) => {
+  // console.log(req.body)
+  SOPSCategory.updateOne(
+    { _id: req.body.id },
+    { $set: { "archieveRecord": req.body.archieveRecord } })
+    .then(result => {
+      // console.log(result)
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
+      });
+    });
 }

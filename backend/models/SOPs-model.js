@@ -16,8 +16,8 @@ const sopsSchema = mongoose.Schema({
 
     categoryName: [],
 
-    checkIDs: []
-
+    checkIDs: [],
+    archieveRecord: { type: String },
 });
 
 module.exports = mongoose.model('SOPs', sopsSchema);

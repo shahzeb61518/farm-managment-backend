@@ -21,6 +21,8 @@ const jwt = require("jsonwebtoken");
 exports.createAdmin = (req, res, next) => {
     let date = new Date();
     date.toString;
+    let archieveRecord = "false"
+
     bcrypt.hash(req.body.user_Password, 10).then(hash => {
         // console.log("dataaaa", req.body)
         const admin = new Admin({
@@ -33,6 +35,7 @@ exports.createAdmin = (req, res, next) => {
             user_Office_Phone: req.body.user_Office_Phone,
             user_Password: hash,
             joinDate: date,
+            archieveRecord: archieveRecord
         });
         admin.save()
             .then(result => {
@@ -102,6 +105,11 @@ exports.adminLogin = (req, res, next) => {
 exports.getAdmin = (req, res, next) => {
     Admin.find({ user_Role: { $ne: "100" } }).then(documents => {
         // console.log(documents);
+        // documents= documents.filter((el) => {
+        //     if (el.archieveRecord) {
+        //       return el.archieveRecord != "true"
+        //     }
+        //   });
         res.status(200).json({
             message: 'Data fetched!!!',
             AdminList: documents
@@ -153,6 +161,8 @@ exports.updateAdmin = (req, res, next) => {
         user_Last_Name: req.body.user_Last_Name,
         user_Mobile_Phone: req.body.user_Mobile_Phone,
         user_Office_Phone: req.body.user_Office_Phone,
+        archieveRecord: req.body.archieveRecord
+
     });
     Admin.updateOne({ _id: req.body.id }, admin)
         .then(result => {
@@ -169,6 +179,28 @@ exports.updateAdmin = (req, res, next) => {
             });
         });
 }
+
+
+exports.archieved = (req, res, next) => {
+    // console.log(req.body)
+    Admin.updateOne(
+      { _id: req.body.id },
+      { $set: { "archieveRecord": req.body.archieveRecord } })
+      .then(result => {
+        // console.log(result)
+        if (result.nModified > 0) {
+          res.status(200).json({ message: "Update successful!" });
+        } else {
+          res.status(401).json({ message: "Not authorized!" });
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        return res.status(401).json({
+          message: "No updated!"
+        });
+      });
+  }
 
 
 // exports.checkAuth = (req, res, next) => {

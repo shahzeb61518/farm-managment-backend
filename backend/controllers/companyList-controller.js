@@ -2,6 +2,8 @@ const Company = require('../models/companyList-model');
 
 // Create a Company
 exports.createCompany = (req, res, next) => {
+  let archieveRecord = "false"
+
   const company = new Company({
     company_Tax_ID: req.body.company_Tax_ID,
     company_Name: req.body.company_Name,
@@ -11,6 +13,7 @@ exports.createCompany = (req, res, next) => {
     company_City: req.body.company_City,
     company_State: req.body.company_State,
     company_Zip: req.body.company_Zip,
+    archieveRecord:archieveRecord
   });
   company.save().then(createdCompany => {
     console.log(createdCompany);
@@ -34,6 +37,11 @@ exports.createCompany = (req, res, next) => {
 exports.getCompanyList = (req, res, next) => {
   Company.find().then(documents => {
     // console.log(documents);
+    // documents= documents.filter((el) => {
+    //     if (el.archieveRecord) {
+    //       return el.archieveRecord != "true"
+    //     }
+    //   });
     res.status(200).json({
       message: 'Data fetched!!!',
       CompanyList: documents
@@ -75,6 +83,8 @@ exports.updateCompany = (req, res, next) => {
     company_City: req.body.company_City,
     company_State: req.body.company_State,
     company_Zip: req.body.company_Zip,
+    archieveRecord:req.body.archieveRecord
+
   });
  console.log(req.body)
   Company.updateOne({ _id: req.body.id }, company)
@@ -93,4 +103,25 @@ exports.updateCompany = (req, res, next) => {
               message: "No updated!"
           });
       });
+}
+
+exports.archieved = (req, res, next) => {
+  // console.log(req.body)
+  Company.updateOne(
+    { _id: req.body.id },
+    { $set: { "archieveRecord": req.body.archieveRecord } })
+    .then(result => {
+      // console.log(result)
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
+      });
+    });
 }

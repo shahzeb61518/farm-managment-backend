@@ -1,6 +1,8 @@
 const Plants = require('../models/plants-model');
 
 exports.create = (req, res, next) => {
+  let archieveRecord = "false"
+
   const plants = new Plants({
     plant_Name: req.body.plant_Name,
     plant_Id: req.body.plant_Id,
@@ -16,6 +18,7 @@ exports.create = (req, res, next) => {
     plant_Flower_Time: req.body.plant_Flower_Time,
     plant_Total_Time: req.body.plant_Total_Time,
     plant_Light_Sched: req.body.plant_Light_Sched,
+    archieveRecord:archieveRecord
   });
   plants.save().then(createdObject => {
     console.log(createdObject);
@@ -38,6 +41,11 @@ exports.create = (req, res, next) => {
 // Get  
 exports.get = (req, res, next) => {
   Plants.find().then(documents => {
+    // documents= documents.filter((el) => {
+    //     if (el.archieveRecord) {
+    //       return el.archieveRecord != "true"
+    //     }
+    //   });
     // console.log(documents);
     res.status(200).json({
       message: 'Data fetched!!!',
@@ -86,12 +94,35 @@ exports.update = (req, res, next) => {
     plant_Flower_Time: req.body.plant_Flower_Time,
     plant_Total_Time: req.body.plant_Total_Time,
     plant_Light_Sched: req.body.plant_Light_Sched,
+    archieveRecord:req.body.archieveRecord
+
   });
   console.log(req.body)
   Plants.updateOne({ _id: req.body.id }, plants)
     .then(result => {
       console.log(result)
 
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
+      });
+    });
+}
+
+exports.archieved = (req, res, next) => {
+  // console.log(req.body)
+  Plants.updateOne(
+    { _id: req.body.id },
+    { $set: { "archieveRecord": req.body.archieveRecord } })
+    .then(result => {
+      // console.log(result)
       if (result.nModified > 0) {
         res.status(200).json({ message: "Update successful!" });
       } else {

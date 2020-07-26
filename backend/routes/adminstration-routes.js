@@ -20,6 +20,9 @@ router.post('/get', adminstrationController.getAdmin);
 // Admin update
 router.post('/update', adminstrationController.updateAdmin);
 
+//  update
+router.post('/archieved', adminstrationController.archieved);
+
 // router.post('/checkauth', adminstrationController.checkAuth);
 // router.get("/AdminProfile/:id", checkAuth, adminstrationController.getAdminProfileById);
 

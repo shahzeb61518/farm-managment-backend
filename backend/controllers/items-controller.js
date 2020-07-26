@@ -1,6 +1,7 @@
 const Items = require('../models/items-model');
 
 exports.create = (req, res, next) => {
+  let archieveRecord = "false"
   const items = new Items({
     items_Name: req.body.items_Name,
     items_Id: req.body.items_Id,
@@ -9,6 +10,7 @@ exports.create = (req, res, next) => {
     items_Part_No: req.body.items_Part_No,
     items_Unit_of_Measure: req.body.items_Unit_of_Measure,
     items_Unit_Size: req.body.items_Unit_Size,
+    archieveRecord:archieveRecord
   });
   items.save().then(createdObject => {
     console.log(createdObject);
@@ -32,6 +34,11 @@ exports.create = (req, res, next) => {
 exports.get = (req, res, next) => {
   Items.find().then(documents => {
     // console.log(documents);
+    // documents= documents.filter((el) => {
+    //   if (el.archieveRecord) {
+    //     return el.archieveRecord != "true"
+    //   }
+    // });
     res.status(200).json({
       message: 'Data fetched!!!',
       itemsList: documents
@@ -72,13 +79,37 @@ exports.update = (req, res, next) => {
     items_Part_No: req.body.items_Part_No,
     items_Unit_of_Measure: req.body.items_Unit_of_Measure,
     items_Unit_Size: req.body.items_Unit_Size,
-    itemsAddToSupplierList: req.body.itemsAddToSupplierList
+    itemsAddToSupplierList: req.body.itemsAddToSupplierList,
+    archieveRecord:req.body.archieveRecord
+
   });
   console.log(req.body)
   Items.updateOne({ _id: req.body.id }, items)
     .then(result => {
       console.log(result)
 
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
+      });
+    });
+}
+
+exports.archieved = (req, res, next) => {
+
+  // console.log(req.body)
+  Items.updateOne(
+    { _id: req.body.id },
+    { $set: { "archieveRecord": req.body.archieveRecord } })
+    .then(result => {
+      // console.log(result)
       if (result.nModified > 0) {
         res.status(200).json({ message: "Update successful!" });
       } else {

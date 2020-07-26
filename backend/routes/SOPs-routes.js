@@ -17,6 +17,9 @@ router.post('/get', sopsController.getSOPs);
 // SOPs update
 router.post('/update', sopsController.updateSOPs);
 
+//  update
+router.post('/archieved', sopsController.archieved);
+
 // SOPS update with Category Name
 router.post('/categoryIDs/update', sopsController.updateSOPsWithCateogrIDs);
 

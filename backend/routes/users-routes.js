@@ -15,7 +15,10 @@ router.post('/get', usersController.get);
 // User update
 router.post('/update', usersController.update);
 
-// User update
+//  update
+router.post('/archieved', usersController.archieved);
+
+// Userdelete
 router.post('/delete', usersController.delete);
 
 // router.post('/checkauth', userController.checkAuth);

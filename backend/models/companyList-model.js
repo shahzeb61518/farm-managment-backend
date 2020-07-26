@@ -11,6 +11,7 @@ const companySchema = mongoose.Schema({
     company_City: { type: String, required: true },
     company_State: { type: String, required: true },
     company_Zip: { type: String, required: true },
+    archieveRecord: { type: String },
 });
 
 

@@ -11,6 +11,9 @@ router.post('/get', companyListController.getCompanyList);
 // Update COmpany
 router.post("/update", companyListController.updateCompany)
 
+//  update
+router.post('/archieved', companyListController.archieved);
+
 // Delete Company by Id
 router.post("/delete", companyListController.deleteComapny)
 

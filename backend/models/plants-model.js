@@ -16,6 +16,6 @@ const plantsSchema = mongoose.Schema({
      plant_Flower_Time:  { type: String },
      plant_Total_Time:  { type: String },
      plant_Light_Sched:  { type: String },
-      
+     archieveRecord: { type: String },
 });
 module.exports = mongoose.model('Plants', plantsSchema);
