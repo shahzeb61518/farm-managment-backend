@@ -39,12 +39,12 @@ exports.create = (req, res, next) => {
 // Get  
 exports.get = (req, res, next) => {
   Suppliers.find().then(documents => {
-    // console.log(documents);
-    // documents= documents.filter((el) => {
-    //   if (el.archieveRecord) {
-    //     return el.archieveRecord != "true"
-    //   }
-    // });
+    console.log(documents);
+    documents= documents.filter((el) => {
+      if (el.archieveRecord) {
+        return el.archieveRecord != "true"
+      }
+    });
     res.status(200).json({
       message: 'Data fetched!!!',
       suppliersList: documents

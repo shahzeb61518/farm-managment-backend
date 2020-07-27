@@ -104,12 +104,12 @@ exports.adminLogin = (req, res, next) => {
 // Get Company 
 exports.getAdmin = (req, res, next) => {
     Admin.find({ user_Role: { $ne: "100" } }).then(documents => {
-        // console.log(documents);
-        // documents= documents.filter((el) => {
-        //     if (el.archieveRecord) {
-        //       return el.archieveRecord != "true"
-        //     }
-        //   });
+        console.log(documents);
+        documents= documents.filter((el) => {
+            if (el.archieveRecord) {
+              return el.archieveRecord != "true"
+            }
+          });
         res.status(200).json({
             message: 'Data fetched!!!',
             AdminList: documents

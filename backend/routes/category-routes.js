@@ -13,7 +13,8 @@ router.post('/sopscategory/get', sopsCategoryController.get);
 router.post('/sopscategory/update', sopsCategoryController.update);
 // delete
 router.post('/sopscategory/delete', sopsCategoryController.delete);
-
+//  archive
+router.post('/sopscategory/archieved', sopsCategoryController.archieved);
 
 // Items
 // Create
@@ -24,6 +25,8 @@ router.post('/itemscategory/get', itemsCategoryController.get);
 router.post('/itemscategory/update', itemsCategoryController.update);
 // delete
 router.post('/itemscategory/delete', itemsCategoryController.delete);
+//  archive
+router.post('/itemscategory/archieved', itemsCategoryController.archieved);
 
 // Suppliers
 // Create
@@ -34,6 +37,8 @@ router.post('/supplierscategory/get', suppliersCategoryController.get);
 router.post('/supplierscategory/update', suppliersCategoryController.update);
 // delete
 router.post('/supplierscategory/delete', suppliersCategoryController.delete);
+//  archive
+router.post('/supplierscategory/archieved', suppliersCategoryController.archieved);
 
 // router.post('/checkauth', userController.checkAuth);
 // router.get("/userProfile/:id", checkAuth, userController.getUserProfileById);

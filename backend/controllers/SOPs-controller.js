@@ -39,12 +39,12 @@ exports.createSOPs = (req, res, next) => {
 // Get SOPs 
 exports.getSOPs = (req, res, next) => {
   SOPs.find().then(documents => {
-    // console.log(documents);
-    // documents= documents.filter((el) => {
-    //     if (el.archieveRecord) {
-    //       return el.archieveRecord != "true"
-    //     }
-    //   });
+    console.log(documents);
+    documents= documents.filter((el) => {
+        if (el.archieveRecord) {
+          return el.archieveRecord != "true"
+        }
+      });
     res.status(200).json({
       message: 'Data fetched!!!',
       sopsList: documents

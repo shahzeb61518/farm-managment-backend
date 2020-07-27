@@ -113,11 +113,7 @@ exports.update = (req, res, next) => {
 }
 
 exports.archieved = (req, res, next) => {
-  // console.log(req.body)
-  const workAssignment = new WorkAssignment({
-    _id: req.body.id,
-    archieveRecord: req.body.archieveRecord
-  });
+  
   // console.log(req.body)
   WorkAssignment.updateOne(
     { _id: req.body.id },

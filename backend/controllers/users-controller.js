@@ -10,19 +10,21 @@ exports.create = (req, res, next) => {
 
   // bcrypt.hash(req.body.user_Password, 10).then(hash => {
   // console.log("dataaaa", req.body)
+  let email = req.body.user_Email_Address
+  email = email.toLowerCase();
   const users = new Users({
     user_Role: req.body.user_Permission_Code,
     user_Company_ID: req.body.user_Company_ID,
     user_Job_Title: req.body.user_Job_Title,
     user_Permission_Code: req.body.user_Permission_Code,
-    user_Email_Address: req.body.user_Email_Address,
+    user_Email_Address: email,
     user_First_Name: req.body.user_First_Name,
     user_Last_Name: req.body.user_Last_Name,
     user_Mobile_Phone: req.body.user_Mobile_Phone,
     user_Office_Phone: req.body.user_Office_Phone,
     user_Password: req.body.user_Password,
     joinDate: date,
-    archieveRecord:archieveRecord
+    archieveRecord: archieveRecord
   });
   users.save()
     .then(result => {
@@ -43,7 +45,9 @@ exports.create = (req, res, next) => {
 // User login
 exports.login = (req, res, next) => {
   let fetchedUser;
-  Users.findOne({ user_Email_Address: req.body.user_Email_Address })
+  let email = req.body.user_Email_Address
+  email = email.toLowerCase();
+  Users.findOne({ user_Email_Address: email })
     .then(user => {
       if (!user) {
         return res.status(200).json({
@@ -52,7 +56,7 @@ exports.login = (req, res, next) => {
       }
       fetchedUser = user;
       // return bcrypt.compare(req.body.user_Password, user.user_Password);
-      return req.body.user_Password  === user.user_Password
+      return req.body.user_Password === user.user_Password
     })
     .then(result => {
       if (!result) {
@@ -93,7 +97,7 @@ exports.login = (req, res, next) => {
 exports.get = (req, res, next) => {
   Users.find({ user_Role: { $ne: "1" } }).then(documents => {
     // console.log(documents);
-    documents= documents.filter((el) => {
+    documents = documents.filter((el) => {
       if (el.archieveRecord) {
         return el.archieveRecord != "true"
       }
@@ -143,7 +147,7 @@ exports.update = (req, res, next) => {
     user_Mobile_Phone: req.body.user_Mobile_Phone,
     user_Office_Phone: req.body.user_Office_Phone,
     user_Password: req.body.user_Password,
-    archieveRecord:req.body.archieveRecord
+    archieveRecord: req.body.archieveRecord
   });
   Users.updateOne({ _id: req.body.id }, users)
     .then(result => {
