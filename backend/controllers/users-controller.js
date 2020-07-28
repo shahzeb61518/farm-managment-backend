@@ -95,7 +95,7 @@ exports.login = (req, res, next) => {
 
 // Get user 
 exports.get = (req, res, next) => {
-  Users.find({ user_Role: { $ne: "1" } }).then(documents => {
+  Users.find({ user_Role: { $ne: "superadmin" } }).then(documents => {
     // console.log(documents);
     documents = documents.filter((el) => {
       if (el.archieveRecord) {

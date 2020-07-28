@@ -1,6 +1,8 @@
 const Role = require('../models/role-model');
 
 exports.create = (req, res, next) => {
+    console.log("req.body>>Role>",req.body);
+
   let archieveRecord = "false"
 
   const role = new Role({

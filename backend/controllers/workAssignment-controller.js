@@ -80,18 +80,9 @@ exports.update = (req, res, next) => {
   // console.log(req.body)
   const workAssignment = new WorkAssignment({
     _id: req.body.id,
-    SOP_ID: req.body.SOP_ID,
-    SOP_Description: req.body.SOP_Description,
-    assignment_assignToUserId: req.body.assignment_assignToUserId,
-    assignment_workSiteId: req.body.assignment_workSiteId,
-    assignment_When_Assigned: req.body.assignment_When_Assigned,
     assignment_When_Started: req.body.assignment_When_Started,
     assignment_When_Completed: req.body.assignment_When_Completed,
-    assignment_Elapsed_Start_Finish: req.body.assignment_Elapsed_Start_Finish,
-    assignment_Allocated: req.body.assignment_Allocated,
-    assignment_Percent_Over_Under: req.body.assignment_Percent_Over_Under,
     assignment_Status: req.body.assignment_Status,
-    assignment_Notes: req.body.assignment_Notes,
   });
   console.log(req.body)
   WorkAssignment.updateOne({ _id: req.body.id }, workAssignment)
