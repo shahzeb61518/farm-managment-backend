@@ -17,6 +17,9 @@ router.post('/archieved', workAssignmentController.archieved);
 // delete
 router.post('/delete', workAssignmentController.delete);
 
+//  update
+router.post('/get-by-userid', workAssignmentController.getWorkByUserId);
+
 // router.post('/checkauth', userController.checkAuth);
 // router.get("/userProfile/:id", checkAuth, userController.getUserProfileById);
 

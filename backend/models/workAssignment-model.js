@@ -13,6 +13,7 @@ const workAssignmentSchema = mongoose.Schema({
     assignment_Percent_Over_Under: { type: String },
     assignment_Status: { type: String, required: true },
     assignment_Notes: { type: String },
+    assignment_UserId: { type: String },
     archieveRecord: { type: String },
 });
 module.exports = mongoose.model('WorkAssignment', workAssignmentSchema);

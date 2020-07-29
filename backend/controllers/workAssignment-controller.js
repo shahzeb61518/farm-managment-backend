@@ -6,6 +6,7 @@ exports.create = (req, res, next) => {
     SOP_ID: req.body.SOP_ID,
     SOP_Description: req.body.SOP_Description,
     assignment_assignToUserId: req.body.assignment_assignToUserId,
+    assignment_UserId: req.body.assignment_assignToUserId,
     assignment_workSiteId: req.body.assignment_workSiteId,
     assignment_When_Assigned: req.body.assignment_When_Assigned,
     assignment_When_Started: req.body.assignment_When_Started,
@@ -42,7 +43,7 @@ exports.get = (req, res, next) => {
     .populate('assignment_assignToUserId')
     .populate('assignment_workSiteId').then(documents => {
       // console.log(documents);
-      documents= documents.filter((el) => {
+      documents = documents.filter((el) => {
         if (el.archieveRecord) {
           return el.archieveRecord != "true"
         }
@@ -104,7 +105,7 @@ exports.update = (req, res, next) => {
 }
 
 exports.archieved = (req, res, next) => {
-  
+
   // console.log(req.body)
   WorkAssignment.updateOne(
     { _id: req.body.id },
@@ -122,5 +123,46 @@ exports.archieved = (req, res, next) => {
       return res.status(401).json({
         message: "No updated!"
       });
+    });
+}
+
+
+// exports.getWorkByUserId = (req, res, next) => {
+//   console.log("req.body.assignment_UserId", req.body.assignment_UserId);
+//   WorkAssignment.find({}, { projection: { _id: 0, name: 1, address: 1 } }).then(workAssignment => {
+//     if (workAssignment) {
+//       console.log("workAssignment", workAssignment);
+//       res.status(200).json(workAssignment);
+//     } else {
+//       res.status(404).json({
+//         message: "workAssignment not found!",
+//         workAssignment: workAssignment
+//       });
+//     }
+//   })
+//     .catch(error => {
+//       res.status(500).json({
+//         message: "Fetching workAssignment failed!"
+//       });
+//     });
+// }
+exports.getWorkByUserId = (req, res, next) => {
+  console.log("req.body.assignment_UserId", req.body.assignment_UserId);
+
+  WorkAssignment.find().then(documents => {
+      // console.log(documents);
+      documents = documents.filter((el) => {
+        if (el.archieveRecord) {
+          return el.archieveRecord != "true" && el.assignment_UserId === req.body.assignment_UserId
+        }
+      });
+      res.status(200).json({
+        message: 'Data fetched!!!',
+        workAssignmentList: documents
+      });
+    }).catch(error => {
+      res.status(500).json({
+        message: "Getting data failed!"
+      })
     });
 }
