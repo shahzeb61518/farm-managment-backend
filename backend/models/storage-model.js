@@ -7,5 +7,7 @@ const storageSchema = mongoose.Schema({
     storage_Location: { type: String  },
     storage_Purpose: { type: String  },
     archieveRecord: { type: String },
+    adminObjectId: { type: mongoose.Schema.ObjectId, ref: 'Users' },
+    adminId: { type: String },
 });
 module.exports = mongoose.model('Storage', storageSchema);

@@ -10,7 +10,9 @@ exports.create = (req, res, next) => {
     items_Part_No: req.body.items_Part_No,
     items_Unit_of_Measure: req.body.items_Unit_of_Measure,
     items_Unit_Size: req.body.items_Unit_Size,
-    archieveRecord:archieveRecord
+    archieveRecord: archieveRecord,
+    adminObjectId: req.body.adminId,
+    adminId: req.body.adminId
   });
   items.save().then(createdObject => {
     console.log(createdObject);
@@ -34,9 +36,9 @@ exports.create = (req, res, next) => {
 exports.get = (req, res, next) => {
   Items.find().then(documents => {
     console.log(documents);
-    documents= documents.filter((el) => {
+    documents = documents.filter((el) => {
       if (el.archieveRecord) {
-        return el.archieveRecord != "true"
+        return el.archieveRecord != "true" && el.adminId === req.body.id
       }
     });
     res.status(200).json({
@@ -80,7 +82,7 @@ exports.update = (req, res, next) => {
     items_Unit_of_Measure: req.body.items_Unit_of_Measure,
     items_Unit_Size: req.body.items_Unit_Size,
     itemsAddToSupplierList: req.body.itemsAddToSupplierList,
-    archieveRecord:req.body.archieveRecord
+    archieveRecord: req.body.archieveRecord
 
   });
   console.log(req.body)

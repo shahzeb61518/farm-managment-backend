@@ -11,5 +11,7 @@ const itemsSchema = mongoose.Schema({
     items_Unit_Size: { type: String },
     itemsAddToSupplierList: [],
     archieveRecord: { type: String },
+    adminObjectId: { type: mongoose.Schema.ObjectId, ref: 'Users' },
+    adminId: { type: String },
 });
 module.exports = mongoose.model('Items', itemsSchema);

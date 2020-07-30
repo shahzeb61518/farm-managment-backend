@@ -5,7 +5,9 @@ exports.create = (req, res, next) => {
 
   const sopsCategory = new SOPSCategory({
     SOP_Category: req.body.SOP_Category,
-    archieveRecord:archieveRecord
+    archieveRecord:archieveRecord,
+    adminObjectId:  req.body.adminId,
+    adminId: req.body.adminId
   });
   sopsCategory.save().then(createdObject => {
     console.log(createdObject);
@@ -31,7 +33,7 @@ exports.get = (req, res, next) => {
     console.log(documents);
     documents= documents.filter((el) => {
       if (el.archieveRecord) {
-        return el.archieveRecord != "true"
+        return el.archieveRecord != "true" && el.adminId === req.body.id
       }
     });
     res.status(200).json({

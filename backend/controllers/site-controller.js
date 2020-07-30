@@ -10,7 +10,9 @@ exports.create = (req, res, next) => {
     site_Purpose: req.body.site_Purpose,
     site_Location: req.body.site_Location,
     site_Structure: req.body.site_Structure,
-    archieveRecord:archieveRecord
+    archieveRecord: archieveRecord,
+    adminObjectId: req.body.adminId,
+    adminId: req.body.adminId
   });
   site.save().then(createdObject => {
     console.log(createdObject);
@@ -34,9 +36,9 @@ exports.create = (req, res, next) => {
 exports.get = (req, res, next) => {
   Site.find().then(documents => {
     console.log(documents);
-    documents= documents.filter((el) => {
+    documents = documents.filter((el) => {
       if (el.archieveRecord) {
-        return el.archieveRecord != "true"
+        return el.archieveRecord != "true" && el.adminId === req.body.id
       }
     });
     res.status(200).json({
@@ -78,7 +80,7 @@ exports.update = (req, res, next) => {
     site_Purpose: req.body.site_Purpose,
     site_Location: req.body.site_Location,
     site_Structure: req.body.site_Structure,
-    archieveRecord:req.body.archieveRecord
+    archieveRecord: req.body.archieveRecord
 
   });
   console.log(req.body)
@@ -101,7 +103,7 @@ exports.update = (req, res, next) => {
 }
 
 exports.archieved = (req, res, next) => {
- 
+
   // console.log(req.body)
   Site.updateOne(
     { _id: req.body.id },

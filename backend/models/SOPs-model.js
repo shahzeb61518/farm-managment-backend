@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const sopsSchema = mongoose.Schema({
-    SOP_Purpose_Description: { type: String},
+    SOP_Purpose_Description: { type: String },
 
     responsibilityList: [],
 
@@ -18,6 +18,8 @@ const sopsSchema = mongoose.Schema({
 
     checkIDs: [],
     archieveRecord: { type: String },
+    adminObjectId: { type: mongoose.Schema.ObjectId, ref: 'Users' },
+    adminId: { type: String },
 });
 
 module.exports = mongoose.model('SOPs', sopsSchema);

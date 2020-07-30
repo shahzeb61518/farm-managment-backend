@@ -16,7 +16,9 @@ exports.create = (req, res, next) => {
     assignment_Percent_Over_Under: req.body.assignment_Percent_Over_Under,
     assignment_Status: req.body.assignment_Status,
     assignment_Notes: req.body.assignment_Notes,
-    archieveRecord: archieveRecord
+    archieveRecord: archieveRecord,
+    adminObjectId: req.body.adminId,
+    adminId: req.body.adminId
   });
   workAssignment.save().then(createdObject => {
     console.log(createdObject);
@@ -150,19 +152,19 @@ exports.getWorkByUserId = (req, res, next) => {
   console.log("req.body.assignment_UserId", req.body.assignment_UserId);
 
   WorkAssignment.find().then(documents => {
-      // console.log(documents);
-      documents = documents.filter((el) => {
-        if (el.archieveRecord) {
-          return el.archieveRecord != "true" && el.assignment_UserId === req.body.assignment_UserId
-        }
-      });
-      res.status(200).json({
-        message: 'Data fetched!!!',
-        workAssignmentList: documents
-      });
-    }).catch(error => {
-      res.status(500).json({
-        message: "Getting data failed!"
-      })
+    // console.log(documents);
+    documents = documents.filter((el) => {
+      if (el.archieveRecord) {
+        return el.archieveRecord != "true" && el.assignment_UserId === req.body.assignment_UserId
+      }
     });
+    res.status(200).json({
+      message: 'Data fetched!!!',
+      workAssignmentList: documents
+    });
+  }).catch(error => {
+    res.status(500).json({
+      message: "Getting data failed!"
+    })
+  });
 }

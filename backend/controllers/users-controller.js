@@ -10,6 +10,11 @@ exports.create = (req, res, next) => {
 
   // bcrypt.hash(req.body.user_Password, 10).then(hash => {
   // console.log("dataaaa", req.body)
+  let companyID, companyName;
+  if (req.body.companyId) {
+    companyID = req.body.companyId
+  }
+  companyName = req.body.companyName
   let email = req.body.user_Email_Address
   email = email.toLowerCase();
   const users = new Users({
@@ -24,7 +29,12 @@ exports.create = (req, res, next) => {
     user_Office_Phone: req.body.user_Office_Phone,
     user_Password: req.body.user_Password,
     joinDate: date,
-    archieveRecord: archieveRecord
+    archieveRecord: archieveRecord,
+    companyObjectId: companyID,
+    companyId: companyID,
+    companyName: companyName,
+    adminObjectId: req.body.adminId,
+    adminId: req.body.adminId
   });
   users.save()
     .then(result => {
@@ -45,6 +55,7 @@ exports.create = (req, res, next) => {
 // User login
 exports.login = (req, res, next) => {
   let fetchedUser;
+  let companyName
   let email = req.body.user_Email_Address
   email = email.toLowerCase();
   Users.findOne({ user_Email_Address: email })
@@ -64,13 +75,19 @@ exports.login = (req, res, next) => {
           message: "Invalid email or password"
         });
       }
+      console.log("fetchedUser>>>>", fetchedUser)
+      if (fetchedUser.companyName){
+        companyName = fetchedUser.companyName
+      }
+
       const token = jwt.sign(
         {
           user_Email_Address: fetchedUser.user_Email_Address,
           userId: fetchedUser._id,
           namef: fetchedUser.user_First_Name,
           namel: fetchedUser.user_Last_Name,
-          role: fetchedUser.user_Role
+          role: fetchedUser.user_Role,
+          companyName: fetchedUser.companyName
         },
         "secret_this_should_be_longer",
         { expiresIn: "10h" }
@@ -82,7 +99,8 @@ exports.login = (req, res, next) => {
         userId: fetchedUser._id,
         namef: fetchedUser.user_First_Name,
         namel: fetchedUser.user_Last_Name,
-        email: fetchedUser.user_Email_Address
+        email: fetchedUser.user_Email_Address,
+        companyName: fetchedUser.companyName
       });
     })
     .catch(err => {
@@ -95,11 +113,11 @@ exports.login = (req, res, next) => {
 
 // Get user 
 exports.get = (req, res, next) => {
-  Users.find({ user_Role: { $ne: "superadmin" } }).then(documents => {
+  Users.find({ user_Role: { $ne: "superadmin" } }).populate('companyObjectId').then(documents => {
     // console.log(documents);
     documents = documents.filter((el) => {
       if (el.archieveRecord) {
-        return el.archieveRecord != "true"
+        return el.archieveRecord != "true" && el.adminId === req.body.id
       }
     });
     res.status(200).json({
@@ -113,6 +131,25 @@ exports.get = (req, res, next) => {
   });
 }
 
+exports.getForSuperAdmin = (req, res, next) => {
+  Users.find({ user_Role: { $ne: "superadmin" } })
+    .populate('companyObjectId').then(documents => {
+      // console.log(documents);
+      documents = documents.filter((el) => {
+        if (el.archieveRecord) {
+          return el.archieveRecord != "true" && el.user_Role === "admin"
+        }
+      });
+      res.status(200).json({
+        message: 'Data fetched!!!',
+        usersList: documents
+      });
+    }).catch(error => {
+      res.status(500).json({
+        message: "Getting data failed!"
+      })
+    });
+}
 
 // // Delete user
 exports.delete = (req, res, next) => {
@@ -147,7 +184,9 @@ exports.update = (req, res, next) => {
     user_Mobile_Phone: req.body.user_Mobile_Phone,
     user_Office_Phone: req.body.user_Office_Phone,
     user_Password: req.body.user_Password,
-    archieveRecord: req.body.archieveRecord
+    archieveRecord: req.body.archieveRecord,
+    companyObjectId: req.body.companyId,
+    companyId: req.body.companyId,
   });
   Users.updateOne({ _id: req.body.id }, users)
     .then(result => {
@@ -166,16 +205,43 @@ exports.update = (req, res, next) => {
   // });
 }
 
-// // Get User By Id
-// exports.getUserById = (req, res, next) => {
-//     UserList.findById(req.body.id, { "password": 0 }).then(user => {
-//         if (!user)
-//             return res.status(404).json({ status: false, message: 'User record not found.' });
-//         else
-//             // console.log(user);
-//             return res.status(200).json(user);
-//     });
-// }
+// update super admin
+exports.updateSuperAdmin = (req, res, next) => {
+  // bcrypt.hash(req.body.user_Password, 10).then(hash => {
+  const users = new Users({
+    _id: req.body.id,
+    user_Email_Address: req.body.user_Email_Address,
+    user_Password: req.body.user_Password,
+  });
+  Users.updateOne({ _id: req.body.id }, users)
+    .then(result => {
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
+      });
+    });
+  // });
+}
+
+
+
+// Get User By Id
+exports.getById = (req, res, next) => {
+  Users.findById(req.body.id).then(user => {
+    if (!user)
+      return res.status(404).json({ status: false, message: 'User record not found.' });
+    else
+      // console.log(user);
+      return res.status(200).json(user);
+  });
+}
 
 exports.archieved = (req, res, next) => {
   Users.updateOne(

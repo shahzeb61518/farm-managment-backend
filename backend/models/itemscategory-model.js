@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 
 const ItemsCategorySchema = mongoose.Schema({
-    Items_Category:  { type: String, required: true },
+    Items_Category: { type: String, required: true },
     archieveRecord: { type: String },
+    adminObjectId: { type: mongoose.Schema.ObjectId, ref: 'Users' },
+    adminId: { type: String },
 });
 module.exports = mongoose.model('ItemsCategory', ItemsCategorySchema);

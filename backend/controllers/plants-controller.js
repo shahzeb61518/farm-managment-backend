@@ -18,7 +18,9 @@ exports.create = (req, res, next) => {
     plant_Flower_Time: req.body.plant_Flower_Time,
     plant_Total_Time: req.body.plant_Total_Time,
     plant_Light_Sched: req.body.plant_Light_Sched,
-    archieveRecord:archieveRecord
+    archieveRecord: archieveRecord,
+    adminObjectId: req.body.adminId,
+    adminId: req.body.adminId
   });
   plants.save().then(createdObject => {
     console.log(createdObject);
@@ -41,11 +43,11 @@ exports.create = (req, res, next) => {
 // Get  
 exports.get = (req, res, next) => {
   Plants.find().then(documents => {
-    documents= documents.filter((el) => {
-        if (el.archieveRecord) {
-          return el.archieveRecord != "true"
-        }
-      });
+    documents = documents.filter((el) => {
+      if (el.archieveRecord) {
+        return el.archieveRecord != "true" && el.adminId === req.body.id
+      }
+    });
     console.log(documents);
     res.status(200).json({
       message: 'Data fetched!!!',
@@ -94,7 +96,7 @@ exports.update = (req, res, next) => {
     plant_Flower_Time: req.body.plant_Flower_Time,
     plant_Total_Time: req.body.plant_Total_Time,
     plant_Light_Sched: req.body.plant_Light_Sched,
-    archieveRecord:req.body.archieveRecord
+    archieveRecord: req.body.archieveRecord
 
   });
   console.log(req.body)

@@ -12,7 +12,11 @@ const usersSchema = mongoose.Schema({
     user_Office_Phone: { type: String },
     user_Job_Title: { type: String },
     archieveRecord: { type: String },
-
+    companyObjectId: { type: mongoose.Schema.ObjectId, ref: 'Company' },
+    companyId: { type: String },
+    companyName: { type: String },
+    adminObjectId: { type: mongoose.Schema.ObjectId, ref: 'Users' },
+    adminId: { type: String },
 
 });
 module.exports = mongoose.model('Users', usersSchema);

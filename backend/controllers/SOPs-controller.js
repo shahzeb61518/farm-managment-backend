@@ -17,7 +17,9 @@ exports.createSOPs = (req, res, next) => {
     adminstrativeTask: req.body.adminstrativeTask,
     processStep: req.body.processStep,
     compeletion: req.body.compeletion,
-    archieveRecord:archieveRecord
+    archieveRecord:archieveRecord,
+    adminObjectId:  req.body.adminId,
+    adminId: req.body.adminId
 
   });
   sops.save().then(createdsops => {
@@ -42,7 +44,7 @@ exports.getSOPs = (req, res, next) => {
     console.log(documents);
     documents= documents.filter((el) => {
         if (el.archieveRecord) {
-          return el.archieveRecord != "true"
+          return el.archieveRecord != "true" && el.adminId === req.body.id
         }
       });
     res.status(200).json({

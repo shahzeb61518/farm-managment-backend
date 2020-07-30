@@ -16,7 +16,9 @@ exports.create = (req, res, next) => {
     suppliers_City: req.body.suppliers_City,
     suppliers_State: req.body.suppliers_State,
     suppliers_Zip_Code: req.body.suppliers_Zip_Code,
-    archieveRecord:archieveRecord
+    archieveRecord:archieveRecord,
+    adminObjectId:  req.body.adminId,
+    adminId: req.body.adminId
   });
   suppliers.save().then(createdObject => {
     console.log(createdObject);
@@ -42,7 +44,7 @@ exports.get = (req, res, next) => {
     console.log(documents);
     documents= documents.filter((el) => {
       if (el.archieveRecord) {
-        return el.archieveRecord != "true"
+        return el.archieveRecord != "true" && el.adminId === req.body.id
       }
     });
     res.status(200).json({
