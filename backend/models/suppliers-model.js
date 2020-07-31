@@ -16,8 +16,8 @@ const suppliersSchema = mongoose.Schema({
        suppliers_Zip_Code: { type: String },
        supliersCategoryName: [],
        archieveRecord: { type: String },
-       adminObjectId: { type: mongoose.Schema.ObjectId, ref: 'Users' },
-       adminId: { type: String },
+       companyObjectId: { type: mongoose.Schema.ObjectId, ref: 'Company' },
+       companyId: { type: String },
 });
 
 module.exports = mongoose.model('Suppliers', suppliersSchema);

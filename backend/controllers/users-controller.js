@@ -10,10 +10,8 @@ exports.create = (req, res, next) => {
 
   // bcrypt.hash(req.body.user_Password, 10).then(hash => {
   // console.log("dataaaa", req.body)
-  let companyID, companyName;
-  if (req.body.companyId) {
-    companyID = req.body.companyId
-  }
+  let companyName;
+ 
   companyName = req.body.companyName
   let email = req.body.user_Email_Address
   email = email.toLowerCase();
@@ -30,11 +28,9 @@ exports.create = (req, res, next) => {
     user_Password: req.body.user_Password,
     joinDate: date,
     archieveRecord: archieveRecord,
-    companyObjectId: companyID,
-    companyId: companyID,
+    companyObjectId: req.body.companyId,
+    companyId: req.body.companyId,
     companyName: companyName,
-    adminObjectId: req.body.adminId,
-    adminId: req.body.adminId
   });
   users.save()
     .then(result => {
@@ -78,6 +74,7 @@ exports.login = (req, res, next) => {
       console.log("fetchedUser>>>>", fetchedUser)
       if (fetchedUser.companyName){
         companyName = fetchedUser.companyName
+        companyId = fetchedUser.companyId
       }
 
       const token = jwt.sign(
@@ -87,7 +84,8 @@ exports.login = (req, res, next) => {
           namef: fetchedUser.user_First_Name,
           namel: fetchedUser.user_Last_Name,
           role: fetchedUser.user_Role,
-          companyName: fetchedUser.companyName
+          companyName: fetchedUser.companyName,
+          companyId: fetchedUser.companyId
         },
         "secret_this_should_be_longer",
         { expiresIn: "10h" }
@@ -100,7 +98,8 @@ exports.login = (req, res, next) => {
         namef: fetchedUser.user_First_Name,
         namel: fetchedUser.user_Last_Name,
         email: fetchedUser.user_Email_Address,
-        companyName: fetchedUser.companyName
+        companyName: fetchedUser.companyName,
+        companyId: fetchedUser.companyId
       });
     })
     .catch(err => {
@@ -117,7 +116,7 @@ exports.get = (req, res, next) => {
     // console.log(documents);
     documents = documents.filter((el) => {
       if (el.archieveRecord) {
-        return el.archieveRecord != "true" && el.adminId === req.body.id
+        return el.archieveRecord != "true" && el.companyId === req.body.id
       }
     });
     res.status(200).json({

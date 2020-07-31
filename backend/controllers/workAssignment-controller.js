@@ -17,8 +17,8 @@ exports.create = (req, res, next) => {
     assignment_Status: req.body.assignment_Status,
     assignment_Notes: req.body.assignment_Notes,
     archieveRecord: archieveRecord,
-    adminObjectId: req.body.adminId,
-    adminId: req.body.adminId
+    companyObjectId: req.body.companyId,
+    companyId: req.body.companyId
   });
   workAssignment.save().then(createdObject => {
     console.log(createdObject);

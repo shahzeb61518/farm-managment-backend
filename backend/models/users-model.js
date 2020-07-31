@@ -15,8 +15,5 @@ const usersSchema = mongoose.Schema({
     companyObjectId: { type: mongoose.Schema.ObjectId, ref: 'Company' },
     companyId: { type: String },
     companyName: { type: String },
-    adminObjectId: { type: mongoose.Schema.ObjectId, ref: 'Users' },
-    adminId: { type: String },
-
 });
 module.exports = mongoose.model('Users', usersSchema);

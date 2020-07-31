@@ -19,8 +19,8 @@ exports.create = (req, res, next) => {
     plant_Total_Time: req.body.plant_Total_Time,
     plant_Light_Sched: req.body.plant_Light_Sched,
     archieveRecord: archieveRecord,
-    adminObjectId: req.body.adminId,
-    adminId: req.body.adminId
+      companyObjectId: req.body.companyId,
+    companyId: req.body.companyId
   });
   plants.save().then(createdObject => {
     console.log(createdObject);
@@ -45,7 +45,7 @@ exports.get = (req, res, next) => {
   Plants.find().then(documents => {
     documents = documents.filter((el) => {
       if (el.archieveRecord) {
-        return el.archieveRecord != "true" && el.adminId === req.body.id
+        return el.archieveRecord != "true" && el.companyId === req.body.id
       }
     });
     console.log(documents);
