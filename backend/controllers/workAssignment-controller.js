@@ -151,7 +151,10 @@ exports.archieved = (req, res, next) => {
 exports.getWorkByUserId = (req, res, next) => {
   console.log("req.body.assignment_UserId", req.body.assignment_UserId);
 
-  WorkAssignment.find().then(documents => {
+  WorkAssignment.find()
+  .populate('SOP_ID')
+  .populate('assignment_assignToUserId')
+  .populate('assignment_workSiteId').then(documents => {
     // console.log(documents);
     documents = documents.filter((el) => {
       if (el.archieveRecord) {

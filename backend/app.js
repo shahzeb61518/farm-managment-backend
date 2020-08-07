@@ -18,6 +18,7 @@ const Role = require('./routes/role-routes');
 const category = require('./routes/category-routes');
 const workAssignment = require('./routes/workAssignment-routes');
 const ForgotPassword = require('./routes/forgotpassword-routes');
+const Chat = require('./routes/chat-routes');
 
 
 const app = express();
@@ -60,6 +61,7 @@ app.use('/api/suppliers', Suppliers);
 app.use('/api/category/', category);
 app.use('/api/forgotpassword/', ForgotPassword);
 app.use('/api/workassignment/', workAssignment);
+app.use('/api/chat/', Chat);
 
 
 app.use('*', (req, res, next) => {
