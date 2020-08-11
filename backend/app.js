@@ -72,6 +72,8 @@ app.use('*', (req, res, next) => {
   });
 })
 
+
+
 console.log("server is running");
 
 module.exports = app;

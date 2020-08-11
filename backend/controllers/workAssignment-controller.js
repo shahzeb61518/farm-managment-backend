@@ -45,9 +45,15 @@ exports.get = (req, res, next) => {
     .populate('assignment_assignToUserId')
     .populate('assignment_workSiteId').then(documents => {
       // console.log(documents);
+      // documents = documents.filter((el) => {
+      //   if (el.archieveRecord) {
+      //     return el.archieveRecord != "true"
+      //   }
+      // });
+      // console.log(documents);
       documents = documents.filter((el) => {
-        if (el.archieveRecord) {
-          return el.archieveRecord != "true"
+        if (el.companyId) {
+          return el.companyId === req.body.id
         }
       });
       res.status(200).json({
@@ -152,22 +158,22 @@ exports.getWorkByUserId = (req, res, next) => {
   console.log("req.body.assignment_UserId", req.body.assignment_UserId);
 
   WorkAssignment.find()
-  .populate('SOP_ID')
-  .populate('assignment_assignToUserId')
-  .populate('assignment_workSiteId').then(documents => {
-    // console.log(documents);
-    documents = documents.filter((el) => {
-      if (el.archieveRecord) {
-        return el.archieveRecord != "true" && el.assignment_UserId === req.body.assignment_UserId
-      }
+    .populate('SOP_ID')
+    .populate('assignment_assignToUserId')
+    .populate('assignment_workSiteId').then(documents => {
+      // console.log(documents);
+      documents = documents.filter((el) => {
+        if (el.archieveRecord) {
+          return el.archieveRecord != "true" && el.assignment_UserId === req.body.assignment_UserId
+        }
+      });
+      res.status(200).json({
+        message: 'Data fetched!!!',
+        workAssignmentList: documents
+      });
+    }).catch(error => {
+      res.status(500).json({
+        message: "Getting data failed!"
+      })
     });
-    res.status(200).json({
-      message: 'Data fetched!!!',
-      workAssignmentList: documents
-    });
-  }).catch(error => {
-    res.status(500).json({
-      message: "Getting data failed!"
-    })
-  });
 }

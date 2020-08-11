@@ -1,13 +1,43 @@
 const Chat = require('../models/chat-model');
 
+
+exports.createChat = (messageObj) => {
+  console.log('messageObj', messageObj);
+
+  return new Promise((resolve, reject) => {
+    let { message, senderId, recieverId, date } = messageObj
+    // console.log('senderId', senderId);
+    // console.log('recieverId', recieverId);
+    const threadId = senderId + "//" + recieverId;
+    const chat = new Chat({
+      message: message,
+      senderId, senderId,
+      recieverId: recieverId,
+      threadId: threadId,
+      date
+    });
+    chat.save().then(
+      msgCreated => {
+        console.log("Msg saved", msgCreated);
+        resolve(msgCreated);
+      })
+      .catch(msgError => {
+        reject(msgError);
+        console.log('chatMessage saving error', msgError);
+      })
+  })
+
+}
+
+
 exports.create = (req, res, next) => {
-    console.log("req.body>>chat>",req.body);
+  console.log("req.body>>chat>", req.body);
 
   let archieveRecord = "false"
 
   const chat = new Chat({
     role_Name: req.body.role_Name,
-    archieveRecord:archieveRecord,
+    archieveRecord: archieveRecord,
     companyObjectId: req.body.companyId,
     companyId: req.body.companyId
   });
@@ -31,13 +61,16 @@ exports.create = (req, res, next) => {
 
 // Get  
 exports.get = (req, res, next) => {
+  // console.log("senderId", req.body.id);
+
   Chat.find().then(documents => {
+    // console.log(documents);
+    // documents = documents.filter((el) => {
+    //   if (el.senderId) {
+    //     return el.senderId === req.body.senderId && el.recieverId === req.body.receiverId
+    //   }
+    // });
     console.log(documents);
-    documents= documents.filter((el) => {
-      if (el.archieveRecord) {
-        return el.archieveRecord != "true" && el.companyId === req.body.id
-      }
-    });
     res.status(200).json({
       message: 'Data fetched!!!',
       chatList: documents
@@ -72,26 +105,26 @@ exports.update = (req, res, next) => {
   const chat = new Chat({
     _id: req.body.id,
     role_Name: req.body.role_Name,
-    archieveRecord:req.body.archieveRecord
-    
-  });
- console.log(req.body)
- Chat.updateOne({ _id: req.body.id }, chat)
-      .then(result => {
-        console.log(result)
+    archieveRecord: req.body.archieveRecord
 
-          if (result.nModified > 0) {
-              res.status(200).json({ message: "Update successful!" });
-          } else {
-              res.status(401).json({ message: "Not authorized!" });
-          }
-      })
-      .catch(err => {
-          console.log(err)
-          return res.status(401).json({
-              message: "No updated!"
-          });
+  });
+  console.log(req.body)
+  Chat.updateOne({ _id: req.body.id }, chat)
+    .then(result => {
+      console.log(result)
+
+      if (result.nModified > 0) {
+        res.status(200).json({ message: "Update successful!" });
+      } else {
+        res.status(401).json({ message: "Not authorized!" });
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(401).json({
+        message: "No updated!"
       });
+    });
 }
 
 exports.archieved = (req, res, next) => {
