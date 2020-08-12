@@ -53,7 +53,7 @@ exports.get = (req, res, next) => {
       // console.log(documents);
       documents = documents.filter((el) => {
         if (el.companyId) {
-          return el.companyId === req.body.id
+          return el.archieveRecord != "byadmin" &&  el.companyId === req.body.id
         }
       });
       res.status(200).json({
@@ -92,6 +92,7 @@ exports.update = (req, res, next) => {
     assignment_When_Started: req.body.assignment_When_Started,
     assignment_When_Completed: req.body.assignment_When_Completed,
     assignment_Status: req.body.assignment_Status,
+    archieveRecord: req.body.archieveRecord
   });
   console.log(req.body)
   WorkAssignment.updateOne({ _id: req.body.id }, workAssignment)
