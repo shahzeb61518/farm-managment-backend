@@ -4,6 +4,8 @@ const http = require("http");
 const socket = require("socket.io");
 const chatController = require("./backend/controllers/chat-controller");
 const createChat = chatController.createChat
+const workAssignmentController = require("./backend/controllers/workAssignment-controller");
+const updateStatus = workAssignmentController.updateStatus
 
 const normalizePort = val => {
   var port = parseInt(val, 10);
@@ -54,9 +56,9 @@ const server = http.createServer(app);
 const io = socket(server);
 io.on("connection", (socket) => {
   console.log("Socket is online!");
+
   socket.on("chat-message", (message) => {
     console.log("message", message);
-    
     createChat(message).then((sentMsg) => {
       console.log("sentMsg", sentMsg);
       // const receivers = msg.owner + "//" + msg.buyer;
@@ -68,6 +70,19 @@ io.on("connection", (socket) => {
       });
     });
   });
+
+
+  socket.on("task-status", (checkStatus) => {
+    console.log("status", checkStatus);
+    updateStatus(checkStatus).then((status) => {
+      console.log("status", status);
+      io.sockets.emit("task-status", {
+        status,
+      });
+    });
+  });
+
+
 });
 
 

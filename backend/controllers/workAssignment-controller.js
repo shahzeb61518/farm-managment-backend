@@ -21,7 +21,7 @@ exports.create = (req, res, next) => {
     companyId: req.body.companyId
   });
   workAssignment.save().then(createdObject => {
-    console.log(createdObject);
+    // console.log(createdObject);
     res.status(201).json({
       message: "Created successfully",
       workAssignment: {
@@ -30,7 +30,7 @@ exports.create = (req, res, next) => {
       }
     });
   }).catch(error => {
-    console.log(error)
+    // console.log(error)
     res.status(500).json({
       message: "Creation failed!"
     })
@@ -53,7 +53,7 @@ exports.get = (req, res, next) => {
       // console.log(documents);
       documents = documents.filter((el) => {
         if (el.companyId) {
-          return el.archieveRecord != "byadmin" &&  el.companyId === req.body.id
+          return el.archieveRecord != "byadmin" && el.companyId === req.body.id
         }
       });
       res.status(200).json({
@@ -94,10 +94,10 @@ exports.update = (req, res, next) => {
     assignment_Status: req.body.assignment_Status,
     archieveRecord: req.body.archieveRecord
   });
-  console.log(req.body)
+  // console.log(req.body)
   WorkAssignment.updateOne({ _id: req.body.id }, workAssignment)
     .then(result => {
-      console.log(result)
+      // console.log(result)
 
       if (result.nModified > 0) {
         res.status(200).json({ message: "Update successful!" });
@@ -106,7 +106,7 @@ exports.update = (req, res, next) => {
       }
     })
     .catch(err => {
-      console.log(err)
+      // console.log(err)
       return res.status(401).json({
         message: "No updated!"
       });
@@ -128,11 +128,45 @@ exports.archieved = (req, res, next) => {
       }
     })
     .catch(err => {
-      console.log(err)
+      // console.log(err)
       return res.status(401).json({
         message: "No updated!"
       });
     });
+}
+
+// updateStatsu as socket
+exports.updateStatus = (obj) => {
+  // console.log('obj', obj);
+  let {
+    id,
+    companyId,
+    assignment_When_Started,
+    assignment_When_Completed,
+    assignment_Status,
+    archieveRecord
+  } = obj
+  return new Promise((resolve, reject) => {
+    const workAssignment = new WorkAssignment({
+      _id: id,
+      assignment_When_Started: assignment_When_Started,
+      assignment_When_Completed: assignment_When_Completed,
+      assignment_Status: assignment_Status,
+      archieveRecord: archieveRecord
+    });
+    // console.log(req.body)
+    WorkAssignment.updateOne({ _id: id }, workAssignment)
+      .then(result => {
+        // console.log(result)
+        if (result.nModified > 0) {
+          resolve(result);
+        }
+      })
+      .catch(err => {
+        // console.log(err)
+        reject(err);
+      });
+  });
 }
 
 
@@ -156,7 +190,7 @@ exports.archieved = (req, res, next) => {
 //     });
 // }
 exports.getWorkByUserId = (req, res, next) => {
-  console.log("req.body.assignment_UserId", req.body.assignment_UserId);
+  // console.log("req.body.assignment_UserId", req.body.assignment_UserId);
 
   WorkAssignment.find()
     .populate('SOP_ID')
