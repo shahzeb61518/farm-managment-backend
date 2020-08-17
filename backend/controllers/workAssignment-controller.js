@@ -67,6 +67,38 @@ exports.get = (req, res, next) => {
     });
 }
 
+
+exports.getById = (req, res, next) => {
+  console.log("im here yet>>>")
+  console.log("req.params.id>>>", req.params.id)
+  WorkAssignment.find()
+    .populate('SOP_ID')
+    .populate('assignment_assignToUserId')
+    .populate('assignment_workSiteId').then(documents => {
+      // console.log(documents);
+      // documents = documents.filter((el) => {
+      //   if (el.archieveRecord) {
+      //     return el.archieveRecord != "true"
+      //   }
+      // });
+      // console.log(documents);
+      documents = documents.filter((el) => {
+        if (el.companyId) {
+          return el.archieveRecord != "byadmin" && el.companyId === req.params.id
+        }
+      });
+      res.status(200).json({
+        message: 'Data fetched!!!',
+        workAssignmentList: documents
+      });
+    }).catch(error => {
+      res.status(500).json({
+        message: "Getting data failed!"
+      })
+    });
+}
+
+
 // // Delete 
 exports.delete = (req, res, next) => {
   WorkAssignment.deleteOne({ _id: req.body.id }).then(

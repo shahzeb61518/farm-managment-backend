@@ -8,6 +8,9 @@ router.post('/create', workAssignmentController.create);
 //  get
 router.post('/get', workAssignmentController.get);
 
+// get by ID
+router.post("/getbyid/:id", workAssignmentController.getById);
+
 //  update
 router.post('/update', workAssignmentController.update);
 
