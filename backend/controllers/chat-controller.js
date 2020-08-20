@@ -5,7 +5,7 @@ exports.createChat = (messageObj) => {
   console.log('messageObj', messageObj);
 
   return new Promise((resolve, reject) => {
-    let { message, senderId, recieverId, date } = messageObj
+    let { message, senderId, recieverId, date, read } = messageObj
     // console.log('senderId', senderId);
     // console.log('recieverId', recieverId);
     const threadId = senderId + "//" + recieverId;
@@ -14,7 +14,8 @@ exports.createChat = (messageObj) => {
       senderId, senderId,
       recieverId: recieverId,
       threadId: threadId,
-      date
+      date,
+      read: read
     });
     chat.save().then(
       msgCreated => {
@@ -101,18 +102,16 @@ exports.delete = (req, res, next) => {
 
 
 exports.update = (req, res, next) => {
-  // console.log(req.body)
+  console.log(req.body)
   const chat = new Chat({
-    _id: req.body.id,
-    role_Name: req.body.role_Name,
-    archieveRecord: req.body.archieveRecord
-
+    threadId: req.body.id,
+    read: "true"
   });
   console.log(req.body)
-  Chat.updateOne({ _id: req.body.id }, chat)
+  // Chat.updateOne({ threadId: req.body.id }, chat)
+  Chat.updateMany({ threadId: req.body.id }, { $set: { read: "true!" } })
     .then(result => {
       console.log(result)
-
       if (result.nModified > 0) {
         res.status(200).json({ message: "Update successful!" });
       } else {

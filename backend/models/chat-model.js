@@ -6,6 +6,7 @@ const chatSchema = mongoose.Schema({
     recieverId: { type: String },
     check: { type: String },
     threadId: { type: String },
-    date: { type: String }
+    date: { type: String },
+    read: { type: String }
 });
 module.exports = mongoose.model('Chat', chatSchema);
