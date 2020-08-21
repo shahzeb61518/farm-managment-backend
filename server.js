@@ -57,10 +57,11 @@ const io = socket(server);
 io.on("connection", (socket) => {
   console.log("Socket is online!");
 
+  // for chatting
   socket.on("chat-message", (message) => {
-    console.log("message", message);
+    // console.log("message", message);
     createChat(message).then((sentMsg) => {
-      console.log("sentMsg", sentMsg);
+      // console.log("sentMsg", sentMsg);
       // const receivers = msg.owner + "//" + msg.buyer;
       // msg.user_id = sentMsg.user_id;
       io.sockets.emit("chat-message", {
@@ -72,19 +73,32 @@ io.on("connection", (socket) => {
   });
 
 
+  // for updating assigne work status
   socket.on("task-status", (checkStatus) => {
-    console.log("status", checkStatus);
+    // console.log("status", checkStatus);
     updateStatus(checkStatus).then((status) => {
-      console.log("status", status);
+      // console.log("status", status);
       io.sockets.emit("task-status", {
         status,
       });
     });
   });
 
+  // for getting assign work real time
+  socket.on("realtime-assignmentwrok", (checkTask) => {
+    console.log("status", checkTask);
+    if (checkTask.success === "successfully-done") {
+      io.sockets.emit("realtime-assignmentwrok", {
+        checkStatus: "get-assign-task",
+      });
+    }
+  });
+
+
+
+
 
 });
-
 
 
 server.on("error", onError);
